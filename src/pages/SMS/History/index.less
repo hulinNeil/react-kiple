@@ -1,0 +1,28 @@
+/*
+ * @Author: Neil Hu 
+ * @Date: 2020-05-04 19:44:22 
+ * @Last Modified by:   Neil Hu 
+ * @Last Modified time: 2020-05-04 19:44:22 
+ */
+.sms-sent {
+  &-search-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .ant-form-item {
+      margin-right: 20px;
+      width: 180px;
+      &.form-task-id {
+        max-width: 150px;
+      }
+      &.form-tel-number {
+        max-width: 180px;
+      }
+      &.submit {
+        .ant-btn {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

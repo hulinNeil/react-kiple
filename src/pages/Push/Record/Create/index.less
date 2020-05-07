@@ -1,0 +1,57 @@
+.push-create {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.push-editor {
+  display: flex;
+  flex-direction: row;
+  &-form {
+    flex: 1;
+  }
+  .push-preview {
+    margin-left: 20px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    flex-basis: 40%;
+    max-width: 400px;
+    &-title {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    &-device {
+      width: 100%;
+      background-image: url('../../../../assets/images/phone.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      padding: 16% 8.658% 10px;
+      .content {
+        display: flex;
+        flex-direction: row;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 8px;
+        .text {
+          font-size: 12px;
+          flex: 1;
+          margin-right: 8px;
+          overflow: hidden;
+        }
+        img {
+          height: 40px;
+          width: 40px;
+        }
+      }
+    }
+  }
+  &-submit {
+    border-top: 1px solid #f0f0f0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    button {
+      margin-right: 10px;
+    }
+  }
+}

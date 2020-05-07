@@ -1,0 +1,35 @@
+.custom-modal {
+  &-warning {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &-icon {
+      font-size: 36px;
+      color: #f90;
+      margin-right: 15px;
+    }
+    &-body {
+      flex: 1;
+      width: 100%;
+      padding-right: 56px;
+    }
+  }
+  .ant-modal-body {
+    padding: 20px 0;
+    .ant-modal-confirm-btns {
+      margin-top: 20px;
+    }
+    .ant-modal-confirm-content {
+      border: 1px solid #f0f0f0;
+      border-left-width: 0px;
+      border-right-width: 0px;
+      padding: 20px 20px;
+    }
+    .ant-modal-confirm-title {
+      padding: 0 20px;
+    }
+    .ant-modal-confirm-btns {
+      margin-right: 20px;
+    }
+  }
+}

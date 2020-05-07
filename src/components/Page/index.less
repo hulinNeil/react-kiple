@@ -1,0 +1,41 @@
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  &_header {
+    line-height: 50px;
+    height: 50px;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    padding: 0 20px;
+    color: #000;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &--back {
+      margin-right: 20px;
+      cursor: pointer;
+      color: #00a3e4;
+      font-size: 18px;
+    }
+    &--left {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      h2 {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+        max-width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  &_body {
+    padding: 20px;
+  }
+}

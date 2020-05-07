@@ -1,0 +1,18 @@
+export default {
+  'sms.tpl.title': 'Template Management',
+  'sms.tpl.create': 'Create template',
+  'sms.tpl.edit': 'Edit template',
+  'sms.tpl.name': 'Template Name',
+  'sms.tpl.type': '短信类型',
+  'sms.tpl.content': '短信内容',
+  'sms.tpl.last': '最后编辑时间',
+  'sms.tpl.business': '业务方',
+  'sms.tpl.system': '系统',
+  'sms.tpl.operate': '操作',
+  'sms.kind.marketing': 'Marketing',
+  'sms.kind.warning': 'Warning',
+  'sms.kind.verification': 'Verification',
+  'sms.history.status.pending': 'Pending',
+  'sms.history.status.success': 'Success',
+  'sms.history.status.fail': 'Fail',
+};

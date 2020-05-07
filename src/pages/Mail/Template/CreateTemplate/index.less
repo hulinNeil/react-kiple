@@ -1,0 +1,38 @@
+.mail-editor {
+  max-width: 1000px;
+  margin: 0 auto;
+  .ant-form-item-control {
+    max-width: 50%;
+  }
+  &-content {
+    .ant-form-item-control {
+      max-width: 100%;
+    }
+  }
+  &-submit {
+    border-top: 1px solid #f0f0f0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    button {
+      margin-right: 10px;
+    }
+  }
+  .ql-editor {
+    min-height: 18em;
+  }
+  .business-view {
+    margin-bottom: 0;
+    > .ant-form-item-control > .ant-form-item-control-input > .ant-form-item-control-input-content {
+      display: flex;
+      .ant-form-item-control {
+        max-width: 100%;
+      }
+      & > div {
+        flex: 1;
+        &:first-child {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+}

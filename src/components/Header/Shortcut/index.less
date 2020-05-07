@@ -1,0 +1,178 @@
+.check-product {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    background-color: #191919;
+  
+    .header-product-title {
+      font-size: 12px;
+      color: #888;
+      line-height: 12px;
+      margin-top: 25px;
+      margin-left: 20px;
+      margin-bottom: 6px;
+      padding-left: 10px;
+    }
+    .header-product-list {
+      position: relative;
+      background-color: #191919;
+      // left: 86px;
+      // top: 0;
+      z-index: 1000;
+      max-width: 680px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: row;
+      cursor: default;
+      .product-col {
+        width: 160px;
+        padding-left: 10px;
+        &-title {
+          vertical-align: middle;
+          font-size: 14px;
+          color: #7c878e;
+          padding-bottom: 8px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          img {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+          }
+        }
+        &-item {
+          line-height: 24px;
+          height: 24px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 0;
+          white-space: nowrap;
+          font-size: 12px;
+          color: #aaa;
+          width: 100%;
+          &:hover {
+            color: #00a3e4;
+          }
+          &-title {
+            margin-right: 8px;
+          }
+          .ant-checkbox {
+            top: initial;
+          }
+          .ant-checkbox-disabled {
+            opacity: 0.5;
+            & + span {
+                 color: #a6a6a6;
+            }
+            .ant-checkbox-inner {
+                background-color: #ddd;
+            }
+          }
+        }
+      }
+    }
+    .header-product-tool {
+      height: 60px;
+      line-height: 60px;
+      border-top: 1px solid #444;
+      text-align: center;
+      .check-product-save {
+        margin-right: 20px;
+        color: #fff;
+        font-size: 12px;
+        background-color: #00a3e4;
+        border-color: #00a3e4;
+        &:hover {
+          background-color: #006eff;
+        }
+      }
+      .check-product-cancel {
+        color: #888;
+        font-size: 12px;
+        border-color: #888;
+        &:hover {
+          color: #fff;
+          border-color: #fff;
+        }
+      }
+    }
+  }
+  
+  .header {
+    &-shortcut {
+      padding-left: 14px;
+      position: relative;
+      &-list {
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+        > li {
+          display: inline-flex;
+          align-items: center;
+          box-sizing: border-box;
+          padding-right: 6px;
+          height: 50px;
+          &.header-shortcut-add {
+            width: 50px;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            font-weight: 600;
+            &:hover {
+              background-color: #344258;
+              color: #fff;
+            }
+          }
+          a {
+            display: inline-block;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #c1c6c8;
+            font-size: 12px;
+            height: 20px;
+            border: 1px dashed transparent;
+            padding: 0 5px;
+            box-sizing: border-box;
+            line-height: 18px;
+            &:hover,
+            &.active {
+              color: #fff;
+            }
+            &.header-shortcut-editing {
+                border: 1px dashed #bbb;
+                &.active{
+                    color: #c1c6c8;
+                }
+                &:hover {
+                    border-color: #00a3e4;
+                }
+            }
+          }
+        }
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 17px;
+        bottom: 17px;
+        width: 1px;
+        background-color: rgba(124, 135, 142, 0.5);
+      }
+    }
+}
+
+.header-shortcut-editing-hover {
+    .ant-tooltip-inner,.ant-tooltip-arrow::before {
+        background-color: #fff;
+        color: #333;
+        font-size: 12px;
+    }
+}
