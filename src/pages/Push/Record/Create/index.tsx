@@ -18,6 +18,7 @@ const defaultImgUrl = 'https://www.gstatic.com/mobilesdk/180130_mobilesdk/images
 const Create: React.FC<{}> = () => {
   const confirmLoading = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.confirmLoading);
   const themeListData = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.themeListData);
+  const [isShowFields, setShowFields] = useState(false);
   const [imgStatus, setImgStatus] = useState<ImgStatus>({ help: ' ', validateStatus: '' });
   const [previewImg, setPreviewImg] = useState(defaultImgUrl);
   const [title, setTitle] = useState('Notification Title');
@@ -134,11 +135,10 @@ const Create: React.FC<{}> = () => {
                 />
               </Form.Item>
               <Form.Item label={intl.get('push.msg.fields')}>
-                <div>
-                  <Switch />
+                <div className="field-switch">
+                  <Switch checked={isShowFields} onChange={(e) => setShowFields(e)} />
                 </div>
-
-                <MultipleColumnsForm></MultipleColumnsForm>
+                {isShowFields && <MultipleColumnsForm></MultipleColumnsForm>}
               </Form.Item>
             </div>
             <div className="push-preview">
