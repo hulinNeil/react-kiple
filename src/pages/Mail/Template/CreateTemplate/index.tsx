@@ -44,7 +44,7 @@ const Create: React.FC<{}> = () => {
     form.setFieldsValue(fields);
   };
   // create or edit mail template
-  const createTemplate = async (e: any): Promise<void> => {
+  const createTemplate = (e: any) => {
     const { templateName, title, content, buKind, buSystem, kind } = e;
     const buItem = rawData.find((e) => e.buKind === buKind);
     const placeholderList = content.match(/{\d+}/gi);

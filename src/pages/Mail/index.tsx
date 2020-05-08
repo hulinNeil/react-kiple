@@ -9,6 +9,7 @@ import { ConnectState } from '@/models';
 
 const { Route, Switch, Redirect } = router;
 
+// The create page is large and requires lazy loading
 const Create = React.lazy(() => import(/* webpackChunkName:"create~mail~tpl" */ './Template/CreateTemplate'));
 
 interface MailProps {
@@ -25,6 +26,7 @@ const Mail: React.FC<MailProps> = () => {
       <Route path="/mail/sensitive" component={Sensitive} />
       <Route path="/mail/mass-send" component={Cronjob} />
       <Route path="/mail/history" component={History} />
+      {/* Determine if you have permission to access the create page */}
       {permission === 1 && <Route path="/mail/create-template" component={Create} />}
       <Redirect to="/mail/overview" />
     </Switch>

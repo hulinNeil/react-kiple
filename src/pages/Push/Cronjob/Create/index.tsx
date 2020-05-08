@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
-import { useSelector, useDispatch, Dispatch } from 'dva';
 import moment from 'moment';
+import { useSelector, useDispatch, Dispatch } from 'dva';
 import { Card, Form, Input, Button, Select, Switch, DatePicker } from 'antd';
-import { defaultPlaceholderImage } from '@/config';
-import { PushCronjobState } from '@/models/push/record';
 import Page from '@/components/Page';
 import MultipleColumnsForm, { useMcForm } from '@/components/Form/MultipleColumnsForm';
+import { defaultPlaceholderImage } from '@/config';
+import { PushCronjobState } from '@/models/push/record';
 import { PushCreateParamsType } from '@/services/push/cronjob';
 import './index.less';
 
@@ -65,7 +65,6 @@ const Create: React.FC<{}> = () => {
       const contentH = view.clientHeight;
       const viewH = view.scrollHeight;
       const scrollTop = view.scrollTop;
-      console.log('加载数据中？', topicLoading);
       if (contentH - viewH - scrollTop <= 100 && !topicLoading && (current - 1) * 10 < total) {
         getTopicList();
       }
@@ -124,6 +123,7 @@ const Create: React.FC<{}> = () => {
       <Card className="push-create">
         <Form labelCol={{ span: 5 }} onFinish={createPush} onFinishFailed={() => isShowFields && mcForm.getFields()}>
           <div className="push-editor">
+            {/* 输入任务相关数据(Enter task-related data) */}
             <div className="push-editor-form">
               <Form.Item label={intl.get('push.msg.title')} name="title" rules={[{ required: true, message: intl.get('push.msg.no.title') }]}>
                 <Input type="text" placeholder={intl.get('push.msg.title')} onChange={onTitleChange} />
@@ -162,6 +162,7 @@ const Create: React.FC<{}> = () => {
                 {isShowFields && <MultipleColumnsForm form={mcForm}></MultipleColumnsForm>}
               </Form.Item>
             </div>
+            {/* 预览输入的数据(Preview the input data) */}
             <div className="push-preview">
               <div className="push-preview-title">{intl.get('preview')}</div>
               <div className="push-preview-device">

@@ -20,7 +20,7 @@ const CronjobList: React.FC<{}> = () => {
   const dispatch = useDispatch<Dispatch>();
 
   // get sms cronjob list
-  const getList = async () => {
+  const getList = () => {
     dispatch({
       type: 'mailCronjob/getCronjobList',
     });
@@ -100,7 +100,7 @@ const CronjobList: React.FC<{}> = () => {
       render: renderColCount,
     },
   ];
-  if (permission === 1) {
+  if (permission === 1) { // check user permission to show operate button
     columns.push({
       title: intl.get('sms.tpl.operate'),
       render: renderColButton,

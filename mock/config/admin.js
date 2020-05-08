@@ -142,7 +142,7 @@ const menuList = [
         children: [
           {
             title: '主题管理',
-            key: '/push/theme',
+            key: '/push/topic',
             icon: 'UnorderedListOutlined',
           },
           {

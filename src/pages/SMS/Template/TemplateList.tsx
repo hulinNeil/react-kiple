@@ -149,7 +149,7 @@ const TemplateList: React.FC<{}> = () => {
       width: 100,
     },
   ];
-  if (permission === 1) {
+  if (permission === 1) { // check user permission to show operate button
     columns.push({
       title: intl.get('sms.tpl.operate'),
       width: 130,

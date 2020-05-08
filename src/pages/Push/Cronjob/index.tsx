@@ -14,7 +14,6 @@ import { MailTemplateItem } from '@/services/mail/template';
 import { PaginationConfig } from 'antd/es/pagination';
 import { PushCronjobState } from '@/models/push/record';
 import { SmsCronjobItem } from '@/services/sms/cronjob';
-// import './index.less';
 
 interface TemplateProps extends RouteComponentProps {
   history: History;
@@ -29,22 +28,15 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   const isShouldRefresh = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.isShouldRefresh);
   const pagination = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.pagination);
   const dispatch = useDispatch<Dispatch>();
-  const formValue = { templateName: '', kind: 0 };
-  console.log(dataList);
 
-  // get Email template list
-  const getList = async () => {
-    const { templateName, kind } = formValue;
+  // get push cronjob list
+  const getList = () => {
     dispatch({
       type: 'pushCronjob/getCronjobList',
-      payload: {
-        kind,
-        name: templateName,
-      },
     });
   };
 
-  // delete push template
+  // delete push cronjob
   const handleDel = ({ id, templateName }: MailTemplateItem) => {
     CustomModal.warning({
       title: intl.get('push.msg.delete'),
@@ -57,6 +49,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
       },
     });
   };
+
   // create push message
   const jumpCreatePage = () => {
     history.push('/push/cronjob/create');
@@ -129,7 +122,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
       render: renderColStatus,
     },
   ];
-  if (permission === 1) {
+  if (permission === 1) { // check user permission
     columns.push({
       title: intl.get('sms.tpl.operate'),
       render: renderColButton,
