@@ -73,6 +73,8 @@ export { useMcForm };
 const MultipleColumnsForm: React.FC<{ form: McForm }> = ({ form }) => {
   const { isValid, setValid, fields, setFields }: McForm = form;
 
+  // Every time the data changes, check that the data is valid
+  // 每次数据更改时，检查数据是否有效
   const deletField = (index: number) => {
     fields.splice(index, 1);
     validForm(fields, isValid, setValid);
@@ -85,7 +87,6 @@ const MultipleColumnsForm: React.FC<{ form: McForm }> = ({ form }) => {
     fields.push(JSON.parse(JSON.stringify(initFieldItem)));
     setFields([...fields]);
   };
-
   const onKeyChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value;
     fields[index].key = value;

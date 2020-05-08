@@ -79,7 +79,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   // reset redux data or modify isShouldRefresh for save current state
   useEffect(() => {
     return () => {
-      if (location.pathname !== '/push/create') {
+      if (location.pathname !== '/push/cronjob/create') {
         dispatch({ type: 'pushCronjob/reset' });
       } else {
         dispatch({
@@ -107,6 +107,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
     {
       title: intl.get('push.msg.title'),
       dataIndex: 'title',
+      width: 240,
     },
     {
       title: intl.get('push.msg.content'),
@@ -119,6 +120,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
     {
       title: intl.get('push.msg.sendTime'),
       dataIndex: 'sendTime',
+      width: 150,
       render: renderColTime,
     },
     {

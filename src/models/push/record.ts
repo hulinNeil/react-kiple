@@ -51,7 +51,6 @@ const pushCronjobModel: PushCronjobModel = {
       return { ...state, ...payload };
     },
     reset(state) {
-      console.log('reset');
       const syncSate = JSON.parse(JSON.stringify(initState));
       delete syncSate.tempListData;
       return { ...state, ...syncSate };
