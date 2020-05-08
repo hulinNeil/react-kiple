@@ -12,7 +12,7 @@ import { ColumnProps } from 'antd/es/table';
 import { ConnectState } from '@/models';
 import { MailTemplateItem } from '@/services/mail/template';
 import { PaginationConfig } from 'antd/es/pagination';
-import { PushRecordState } from '@/models/push/record';
+import { PushCronjobState } from '@/models/push/record';
 import { SmsCronjobItem } from '@/services/sms/cronjob';
 // import './index.less';
 
@@ -24,10 +24,10 @@ const { withRouter } = router;
 
 const Template: React.FC<TemplateProps> = ({ history }) => {
   const permission = useSelector((state: ConnectState) => state.user.userInfo.permission);
-  const dataList = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.dataList);
-  const isLoading = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.isLoading);
-  const isShouldRefresh = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.isShouldRefresh);
-  const pagination = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.pagination);
+  const dataList = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.dataList);
+  const isLoading = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.isLoading);
+  const isShouldRefresh = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.isShouldRefresh);
+  const pagination = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.pagination);
   const dispatch = useDispatch<Dispatch>();
   const formValue = { templateName: '', kind: 0 };
   console.log(dataList);
@@ -36,7 +36,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   const getList = async () => {
     const { templateName, kind } = formValue;
     dispatch({
-      type: 'pushRecord/getPushList',
+      type: 'pushCronjob/getCronjobList',
       payload: {
         kind,
         name: templateName,
@@ -47,11 +47,11 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   // delete push template
   const handleDel = ({ id, templateName }: MailTemplateItem) => {
     CustomModal.warning({
-      title: intl.get('sms.tpl.delete'),
-      content: intl.get('mail.tpl.delete.title', { name: templateName }),
+      title: intl.get('push.msg.delete'),
+      content: intl.get('push.msg.delete.title'),
       onOk: async () => {
         await dispatch({
-          type: 'pushRecord/deletePush',
+          type: 'pushCronjob/deleteCronjob',
           payload: { id },
         });
       },
@@ -59,13 +59,13 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   };
   // create push message
   const jumpCreatePage = () => {
-    history.push('/push/create');
+    history.push('/push/cronjob/create');
   };
 
   // pagination change
   const onPaginationChnage = (e: PaginationConfig) => {
     dispatch({
-      type: 'pushRecord/change',
+      type: 'pushCronjob/change',
       payload: { pagination: { ...pagination, current: e.current || 1 } },
     });
   };
@@ -80,10 +80,10 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   useEffect(() => {
     return () => {
       if (location.pathname !== '/push/create') {
-        dispatch({ type: 'pushRecord/reset' });
+        dispatch({ type: 'pushCronjob/reset' });
       } else {
         dispatch({
-          type: 'pushRecord/change',
+          type: 'pushCronjob/change',
           payload: { isShouldRefresh: false },
         });
       }

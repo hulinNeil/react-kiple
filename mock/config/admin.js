@@ -146,8 +146,8 @@ const menuList = [
             icon: 'UnorderedListOutlined',
           },
           {
-            title: '推送记录',
-            key: '/push/record',
+            title: '推送任务',
+            key: '/push/cronjob',
             icon: 'MailOutlined',
           },
         ],

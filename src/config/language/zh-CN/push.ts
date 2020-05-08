@@ -1,7 +1,7 @@
 export default {
   'push.theme.title': '主题管理',
   'push.theme.create': '创建主题',
-  'push.record.title': '推送记录',
+  'push.record.title': '推送任务',
   'push.record.create': '新建推送',
   'push.msg.title': '通知标题',
   'push.msg.edit.title': '请输入通知标题',
@@ -16,4 +16,9 @@ export default {
   'push.msg.sendTime': '发送时间',
   'push.msg.to': '推送目标(主题)',
   'push.msg.fields': '附加参数',
+  'push.msg.error.fields': '不能有无效的',
+  'push.msg.success': '创建推送任务成功',
+  'push.msg.delete': '删除推送',
+  'push.msg.delete.title': '您确定要删除此推送任务吗？',
+  'push.msg.delete.success': '删除推送任务成功',
 };

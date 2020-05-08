@@ -3,9 +3,11 @@ import intl from 'react-intl-universal';
 import { useSelector, useDispatch, Dispatch } from 'dva';
 import moment from 'moment';
 import { Card, Form, Input, Button, Select, Switch, DatePicker } from 'antd';
-import { PushRecordState } from '@/models/push/record';
+import { defaultPlaceholderImage } from '@/config';
+import { PushCronjobState } from '@/models/push/record';
 import Page from '@/components/Page';
-import MultipleColumnsForm from '@/components/Form/MultipleColumnsForm';
+import MultipleColumnsForm, { useMcForm } from '@/components/Form/MultipleColumnsForm';
+import { PushCreateParamsType } from '@/services/push/cronjob';
 import './index.less';
 
 interface ImgStatus {
@@ -13,40 +15,59 @@ interface ImgStatus {
   validateStatus: '' | 'error' | 'success' | 'warning' | 'validating' | undefined;
 }
 
-const defaultImgUrl = 'https://www.gstatic.com/mobilesdk/180130_mobilesdk/images/image_placeholder.png';
-
 const Create: React.FC<{}> = () => {
-  const confirmLoading = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.confirmLoading);
-  const themeListData = useSelector((state: { pushRecord: PushRecordState }) => state.pushRecord.themeListData);
+  const confirmLoading = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.confirmLoading);
+  const topicListData = useSelector((state: { pushCronjob: PushCronjobState }) => state.pushCronjob.topicListData);
   const [isShowFields, setShowFields] = useState(false);
   const [imgStatus, setImgStatus] = useState<ImgStatus>({ help: ' ', validateStatus: '' });
-  const [previewImg, setPreviewImg] = useState(defaultImgUrl);
+  const [previewImg, setPreviewImg] = useState(defaultPlaceholderImage);
   const [title, setTitle] = useState('Notification Title');
   const [content, setContent] = useState('Notification Text');
+  const mcForm = useMcForm();
 
   const dispatch = useDispatch<Dispatch>();
-  const { themeList, themeLoading, current, total } = themeListData;
+  const { topicList, topicLoading, current, total } = topicListData;
 
-  const getThemeList = () => {
+  const getTopicList = () => {
     dispatch({
-      type: 'pushRecord/getThemeList',
+      type: 'pushCronjob/getTopicList',
     });
   };
 
-  // create or edit push
-  const createPush = async (e: any): Promise<void> => {
-    console.log('创建push', e);
+  // create push
+  const createPush = (e: any) => {
+    let body;
+    if (isShowFields) {
+      body = mcForm.getFields(); // 获取fields同时进行校验(Get fields and validate it)
+      if (!body) {
+        return;
+      }
+    }
+    const payload: PushCreateParamsType = {
+      topic: topicList[e.topic].id,
+      title: e.title,
+      content: e.content,
+      body: isShowFields && body ? body : '',
+      picUrl: '',
+      sendTime: Number(e.sendTime.format('x')),
+    };
+
+    dispatch({
+      type: 'pushCronjob/createCronjob',
+      payload,
+    });
   };
 
-  // get more theme on select scroll
+  // get more topic on select scroll
   const onPopupScroll = () => {
     const view = document.querySelector('.mail-tpl-select>div:last-child');
     if (view) {
       const contentH = view.clientHeight;
       const viewH = view.scrollHeight;
       const scrollTop = view.scrollTop;
-      if (contentH - viewH - scrollTop <= 100 && !themeLoading && (current - 1) * 10 < total) {
-        getThemeList();
+      console.log('加载数据中？', topicLoading);
+      if (contentH - viewH - scrollTop <= 100 && !topicLoading && (current - 1) * 10 < total) {
+        getTopicList();
       }
     }
   };
@@ -73,26 +94,26 @@ const Create: React.FC<{}> = () => {
       }
       setImgStatus({ help: ' ', validateStatus: '' });
     }
-    if (!value && previewImg !== defaultImgUrl) {
-      setPreviewImg(defaultImgUrl);
+    if (!value && previewImg !== defaultPlaceholderImage) {
+      setPreviewImg(defaultPlaceholderImage);
     }
   };
 
   // if the image url is incorrect, it needs to be displayed in the form item
   const onImgError = () => {
-    if (previewImg !== defaultImgUrl) {
+    if (previewImg !== defaultPlaceholderImage) {
       setImgStatus({ help: intl.get('push.msg.file.error.img'), validateStatus: 'error' });
     }
   };
 
-  // get push theme list
+  // get push topic list
   useEffect(() => {
-    if (themeList.length === 0) {
-      getThemeList();
+    if (topicList.length === 0) {
+      getTopicList();
     }
     return () => {
       dispatch({
-        type: 'pushRecord/change',
+        type: 'pushCronjob/change',
         payload: { isShouldRefresh: true },
       });
     };
@@ -101,7 +122,7 @@ const Create: React.FC<{}> = () => {
   return (
     <Page title={intl.get('push.record.create')} showArrow={true}>
       <Card className="push-create">
-        <Form labelCol={{ span: 5 }} onFinish={createPush}>
+        <Form labelCol={{ span: 5 }} onFinish={createPush} onFinishFailed={() => isShowFields && mcForm.getFields()}>
           <div className="push-editor">
             <div className="push-editor-form">
               <Form.Item label={intl.get('push.msg.title')} name="title" rules={[{ required: true, message: intl.get('push.msg.no.title') }]}>
@@ -113,14 +134,14 @@ const Create: React.FC<{}> = () => {
               <Form.Item label={intl.get('push.msg.img')} name="image" help={imgStatus.help} validateStatus={imgStatus.validateStatus}>
                 <Input placeholder={intl.get('push.msg.edit.img') + ': https://yourapp.com/image.png'} onChange={onImageChange} />
               </Form.Item>
-              <Form.Item label={intl.get('push.msg.to')} name="theme" rules={[{ required: true, message: intl.get('sms.tpl.no.name') }]}>
+              <Form.Item label={intl.get('push.msg.to')} name="topic" rules={[{ required: true, message: intl.get('sms.tpl.no.name') }]}>
                 <Select
                   dropdownRender={(menu) => <div className="mail-tpl-select">{menu}</div>}
                   notFoundContent={intl.get('sms.send.no.tpl')}
-                  loading={themeLoading}
+                  loading={topicLoading}
                   onPopupScroll={onPopupScroll}
                 >
-                  {themeList.map((value, index) => (
+                  {topicList.map((value, index) => (
                     <Select.Option key={`tpl-${index}`} value={index}>
                       {value.templateName}
                     </Select.Option>
@@ -138,7 +159,7 @@ const Create: React.FC<{}> = () => {
                 <div className="field-switch">
                   <Switch checked={isShowFields} onChange={(e) => setShowFields(e)} />
                 </div>
-                {isShowFields && <MultipleColumnsForm></MultipleColumnsForm>}
+                {isShowFields && <MultipleColumnsForm form={mcForm}></MultipleColumnsForm>}
               </Form.Item>
             </div>
             <div className="push-preview">

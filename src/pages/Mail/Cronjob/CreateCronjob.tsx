@@ -28,13 +28,13 @@ const CreateCronjob = () => {
   };
 
   // get email template list
-  const getTplList = async () => {
+  const getTplList = () => {
     dispatch({
       type: 'mailCronjob/getTemplateList',
     });
   };
   // crete email cronjob
-  const createCronjob = async (item: { to: string; replaceWord: string; sendTime: Moment }) => {
+  const createCronjob = (item: { to: string; replaceWord: string; sendTime: Moment }) => {
     const payload = {
       channelId: 1,
       templateId: tempList[curIndex].id,

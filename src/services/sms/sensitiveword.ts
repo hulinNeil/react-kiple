@@ -21,7 +21,6 @@ export interface SensitiveWordType extends ResponseType {
 }
 
 export const createWord = (params: CreateParamsType): Promise<ResponseType> => {
-  console.log(params);
   return post('/newsensitiveword', params);
 };
 

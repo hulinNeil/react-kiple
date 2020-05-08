@@ -2,18 +2,18 @@ import { message } from 'antd';
 import intl from 'react-intl-universal';
 import { Model } from 'dva';
 import { getSmsTemplateList, SmsTemplatelItem, SmsTemplateType } from '@/services/sms/template';
-import { SmsCronjobItem, getSmsCronjobList, deleteSmsCronjob, createSmsCronjob, SmsCronjobType } from '@/services/sms/cronjob';
+import { SmsCronjobItem, SmsCronjobType } from '@/services/sms/cronjob';
+import { createPushCronjob, deletePushCronjob, getPushCronjobList } from '@/services/push/cronjob';
 import { Pagination } from '@/models/common';
 
-interface ThemeListType {
+interface TopicListData {
   current: number;
   total: number;
-  themeLoading: boolean;
-  curIndex: number;
-  themeList: SmsTemplatelItem[];
+  topicLoading: boolean;
+  topicList: SmsTemplatelItem[];
 }
 
-export interface PushRecordState {
+export interface PushCronjobState {
   dataList: SmsCronjobItem[];
   isLoading: boolean;
   confirmLoading: boolean;
@@ -21,30 +21,29 @@ export interface PushRecordState {
   // When isShouldRefresh is true, the listPage initializes to get the data, and when jump to the createPage, you need to set this value to false, and when you return, the page will not be refreshed
   isShouldRefresh: boolean;
   pagination: Pagination;
-  themeListData: ThemeListType;
+  topicListData: TopicListData;
 }
 
-export interface PushRecordModel extends Model {
-  state: PushRecordState;
+export interface PushCronjobModel extends Model {
+  state: PushCronjobState;
 }
 
-const initState: PushRecordState = {
+const initState: PushCronjobState = {
   dataList: [],
   isLoading: true,
   isShouldRefresh: true,
   confirmLoading: false,
   pagination: { defaultPageSize: 10, total: 0, current: 1 },
-  themeListData: {
+  topicListData: {
     current: 1,
     total: 0,
-    curIndex: -1,
-    themeLoading: false,
-    themeList: [],
+    topicLoading: false,
+    topicList: [],
   },
 };
 
-const pushRecordModel: PushRecordModel = {
-  namespace: 'pushRecord',
+const pushCronjobModel: PushCronjobModel = {
+  namespace: 'pushCronjob',
   state: JSON.parse(JSON.stringify(initState)),
   reducers: {
     change(state, { payload }: any) {
@@ -59,75 +58,73 @@ const pushRecordModel: PushRecordModel = {
     },
   },
   effects: {
-    *createPush({ payload }, { put, select }) {
+    *createCronjob({ payload }, { put }) {
       yield put({
         type: 'change',
         payload: { confirmLoading: true },
       });
-      const result = yield createSmsCronjob(payload);
+      const result = yield createPushCronjob(payload);
       if (result && result.code === 0) {
-        message.success(intl.get('sms.send.crete.cuccess'));
+        message.success(intl.get('push.msg.success'));
+        history.back();
         yield put({
           type: 'getCronjobList',
         });
       }
-      const { themeListData }: PushRecordState = yield select((state: { pushRecord: PushRecordState }) => state.pushRecord);
       yield put({
         type: 'change',
         payload: {
-          dialogVisible: false,
           confirmLoading: false,
-          themeListData: { ...themeListData, curIndex: -1 },
         },
       });
     },
-    *deletePush({ payload }, { put }) {
-      const result = yield deleteSmsCronjob({ id: payload.id });
+    *deleteCronjob({ payload }, { put }) {
+      const result = yield deletePushCronjob({ id: payload.id });
       if (result && result.code === 0) {
-        message.success(intl.get('sms.send.delete.success'));
+        message.success(intl.get('push.msg.delete.success'));
         yield put({
           type: 'getCronjobList',
         });
       }
     },
-    *getPushList(_, { put, select }) {
-      const smsCronjobState: PushRecordState = yield select((state: { pushRecord: PushRecordState }) => state.pushRecord);
+    *getCronjobList(_, { put, select }) {
+      const pushCronjobState: PushCronjobState = yield select((state: { pushCronjob: PushCronjobState }) => state.pushCronjob);
       yield put({
         type: 'change',
         payload: { isLoading: true },
       });
-      const result: SmsCronjobType = yield getSmsCronjobList({ pageNo: smsCronjobState.pagination.current });
+      const result: SmsCronjobType = yield getPushCronjobList({ pageNo: pushCronjobState.pagination.current });
       if (result && result.code === 0 && result.data) {
-        smsCronjobState.dataList = result.data.list || [];
-        smsCronjobState.pagination.total = result.data.totalCount;
+        pushCronjobState.dataList = result.data.list || [];
+        pushCronjobState.pagination.total = result.data.totalCount;
       }
-      smsCronjobState.isLoading = false;
+      pushCronjobState.isLoading = false;
       yield put({
         type: 'change',
-        payload: { ...smsCronjobState },
+        payload: { ...pushCronjobState },
       });
     },
-    *getThemeList(_, { put, select }) {
-      const { themeListData }: PushRecordState = yield select((state: { pushRecord: PushRecordState }) => state.pushRecord);
+    *getTopicList(_, { put, select }) {
+      const { topicListData }: PushCronjobState = yield select((state: { pushCronjob: PushCronjobState }) => state.pushCronjob);
       yield put({
         type: 'change',
-        payload: { themeListData: { ...themeListData, tempLoading: true } },
+        payload: { topicListData: { ...topicListData, topicLoading: true } },
       });
 
-      const { current } = themeListData;
+      const { current } = topicListData;
       const result: SmsTemplateType = yield getSmsTemplateList({ pageNo: current, name: '', kind: 0 });
       if (result && result.code === 0 && result.data && result.data.list) {
-        themeListData.themeList.push(...result.data.list);
-        themeListData.total = result.data.totalCount;
-        themeListData.current += 1;
+        topicListData.topicList.push(...result.data.list);
+        topicListData.total = result.data.totalCount;
+        topicListData.current += 1;
       }
-      themeListData.themeLoading = false;
+      topicListData.topicLoading = false;
       yield put({
         type: 'change',
-        payload: { themeListData: { ...themeListData } },
+        payload: { topicListData: { ...topicListData } },
       });
     },
   },
 };
 
-export default pushRecordModel;
+export default pushCronjobModel;

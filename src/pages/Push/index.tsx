@@ -12,8 +12,8 @@ const Push: React.FC<{}> = () => {
   return (
     <Switch>
       <Route path="/push/theme" component={Theme} />
-      <Route path="/push/record" component={Record} />
-      {permission === 1 && <Route path="/push/create" component={Create} />}
+      <Route path="/push/cronjob" exact component={Record} />
+      {permission === 1 && <Route path="/push/cronjob/create" component={Create} />}
       <Redirect to="/push/theme" />
     </Switch>
   );

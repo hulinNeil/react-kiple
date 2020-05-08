@@ -7,6 +7,7 @@ const mailTplList = []; // 邮件模板
 const mailHistory = []; // 邮件历史
 const mailCronjob = [];
 const smsCronjob = [];
+const pushCronjob = [];
 const smsHistory = [];
 const sensitivelList = [
   { word: 'asd13', editTime: 1587870807859, id: 13 },
@@ -196,18 +197,22 @@ router.get('/web/:ms/templatelist', (req, res) => {
 
 // cronjob 定时任务
 router.post('/web/:ms/newcronjob', (req, res) => {
-  const list = req.params.ms === 'sms' ? smsCronjob : mailCronjob;
-  const templateList = req.params.ms === 'sms' ? smsTplList : mailTplList;
+  const ms = req.params.ms;
+  const list = ms === 'sms' ? smsCronjob : ms === 'mail' ? mailCronjob : pushCronjob;
+  const templateList = ms === 'sms' ? smsTplList : mailTplList;
   const item = Object.assign(req.body, {
     id: list[0] ? list[0].id + 1 : 1,
     status: 1,
     to: '133444,12312,',
   });
-  console.log(req.body);
-  const tpl = templateList.find((item) => item.id === Number(req.body.templateId));
-  item.templateName = tpl.templateName;
-  item.kind = tpl.kind;
-  item.content = tpl.content;
+
+  if (ms !== 'push') {
+    const tpl = templateList.find((item) => item.id === Number(req.body.templateId));
+    item.templateName = tpl.templateName;
+    item.kind = tpl.kind;
+    item.content = tpl.content;
+  }
+
   list.unshift(item);
   setTimeout(() => {
     res.json({
@@ -218,7 +223,8 @@ router.post('/web/:ms/newcronjob', (req, res) => {
 });
 router.delete('/web/:ms/delcronjob', (req, res) => {
   const id = Number(req.query.id);
-  const list = req.params.ms === 'sms' ? smsCronjob : mailCronjob;
+  const ms = req.params.ms;
+  const list = ms === 'sms' ? smsCronjob : ms === 'mail' ? mailCronjob : pushCronjob;
   const index = list.findIndex((item) => item.id === id);
   list.splice(index, 1);
   setTimeout(() => {
@@ -230,7 +236,8 @@ router.delete('/web/:ms/delcronjob', (req, res) => {
 });
 router.get('/web/:ms/cronjoblist', (req, res) => {
   const pageNo = Number(req.query.pageNo);
-  const list = req.params.ms === 'sms' ? smsCronjob : mailCronjob;
+  const ms = req.params.ms;
+  const list = ms === 'sms' ? smsCronjob : ms === 'mail' ? mailCronjob : pushCronjob;
   setTimeout(() => {
     res.json({
       code: 0,
