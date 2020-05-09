@@ -93,7 +93,7 @@ const mailCronjobModel: MailCronjobModel = {
         type: 'change',
         payload: { isLoading: true },
       });
-      const result: MailCronjobType = yield getMailCronjobList({ pageNo: mailCronjobState.pagination.current });
+      const result: MailCronjobType = yield getMailCronjobList({ pageno: mailCronjobState.pagination.current });
       if (result && result.code === 0 && result.data) {
         mailCronjobState.dataList = result.data.list || [];
         mailCronjobState.pagination.total = result.data.totalCount;
@@ -112,7 +112,7 @@ const mailCronjobModel: MailCronjobModel = {
       });
 
       const { current } = tempListData;
-      const result: MailTemplateType = yield getMailTemplateList({ pageNo: current, name: '', kind: 0 });
+      const result: MailTemplateType = yield getMailTemplateList({ pageno: current, name: '', kind: 0 });
       if (result && result.code === 0 && result.data && result.data.list) {
         tempListData.tempList.push(...result.data.list);
         tempListData.total = result.data.totalCount;

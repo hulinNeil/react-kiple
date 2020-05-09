@@ -72,6 +72,7 @@ const pushCronjobModel: PushCronjobModel = {
       yield put({
         type: 'change',
         payload: {
+          isShouldRefresh: true,
           confirmLoading: false,
         },
       });
@@ -91,7 +92,7 @@ const pushCronjobModel: PushCronjobModel = {
         type: 'change',
         payload: { isLoading: true },
       });
-      const result: PushCronjobType = yield getPushCronjobList({ pageNo: pushCronjobState.pagination.current });
+      const result: PushCronjobType = yield getPushCronjobList({ pageno: pushCronjobState.pagination.current });
       if (result && result.code === 0 && result.data) {
         pushCronjobState.dataList = result.data.list || [];
         pushCronjobState.pagination.total = result.data.totalCount;
@@ -110,7 +111,7 @@ const pushCronjobModel: PushCronjobModel = {
       });
 
       const { current } = topicListData;
-      const result: PushTopicType = yield getPushTopicList({ pageNo: current });
+      const result: PushTopicType = yield getPushTopicList({ pageno: current });
       if (result && result.code === 0 && result.data && result.data.list) {
         topicListData.topicList.push(...result.data.list);
         topicListData.total = result.data.totalCount;

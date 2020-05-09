@@ -63,6 +63,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   };
 
   useEffect(() => {
+    console.log('监听改变', isShouldRefresh);
     if (isShouldRefresh) {
       getList();
     }

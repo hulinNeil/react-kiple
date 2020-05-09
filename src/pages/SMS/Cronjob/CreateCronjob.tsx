@@ -132,6 +132,7 @@ const CreateCronjob = () => {
       </Form.Item>
       <Form.Item label={intl.get('sms.send.time')} name="sendTime" rules={[{ required: true, message: intl.get('sms.send.no.time') }]}>
         <DatePicker
+          placeholder={intl.get('sms.send.select.time')}
           format="YYYY-MM-DD HH:mm:ss"
           disabledDate={(current) => current && current < moment()}
           showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}

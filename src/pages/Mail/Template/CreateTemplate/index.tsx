@@ -5,7 +5,7 @@ import { Card, Form, Input, Button, Select } from 'antd';
 import ReactQuill from 'react-quill';
 import Page from '@/components/Page';
 import { CreateMailParamsType } from '@/services/mail/template';
-import { validateMailContent } from '@/utils/validateForm';
+import { validateMailContent, validateEmptyContent } from '@/utils/validateForm';
 import { MailTemplateState } from '@/models/mail/template';
 import { TemplateKindEnum } from '@/config/smsMail';
 import 'react-quill/dist/quill.snow.css';
@@ -87,7 +87,11 @@ const Create: React.FC<{}> = () => {
     <Page title={intl.get('sms.tpl.create')} showArrow={true}>
       <Card className="mail-editor">
         <Form name="mail-editor" form={form} labelCol={{ span: 3 }} onFinish={createTemplate} initialValues={initialValues}>
-          <Form.Item label={intl.get('sms.tpl.name')} name="templateName" rules={[{ required: true, message: intl.get('sms.tpl.no.name') }]}>
+          <Form.Item
+            label={intl.get('sms.tpl.name')}
+            name="templateName"
+            rules={[{ validator: validateEmptyContent.bind(null, intl.get('sms.tpl.no.name')) }]}
+          >
             <Input type="text" placeholder={intl.get('sms.tpl.edit.name')} />
           </Form.Item>
           <Form.Item label={intl.get('sms.tpl.business')} required={true} className="business-view">
@@ -111,7 +115,11 @@ const Create: React.FC<{}> = () => {
               </Select>
             </Form.Item>
           </Form.Item>
-          <Form.Item label={intl.get('mail.tpl.title')} name="title" rules={[{ required: true, message: intl.get('mail.tpl.edit.title') }]}>
+          <Form.Item
+            label={intl.get('mail.tpl.title')}
+            name="title"
+            rules={[{ validator: validateEmptyContent.bind(null, intl.get('mail.tpl.edit.title')) }]}
+          >
             <Input placeholder={intl.get('mail.tpl.no.title')} />
           </Form.Item>
           <Form.Item label={intl.get('mail.tpl.type')} name="kind" rules={[{ required: true, message: intl.get('mail.tpl.select.type') }]}>

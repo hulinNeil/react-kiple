@@ -15,6 +15,8 @@ export default {
   'push.msg.edit.img': '示例',
   'push.msg.sendTime': '发送时间',
   'push.msg.to': '主题',
+  'push.msg.no.to': '暂无主题，请先创建主题',
+  'push.msg.select.to': '请选择主题',
   'push.msg.fields': '附加参数',
   'push.msg.error.fields': '不能有无效的',
   'push.msg.success': '创建推送任务成功',
@@ -38,4 +40,6 @@ export default {
   'push.topic.delete.title': '您确定要删除此主题吗？',
   'push.topic.delete.success': '删除主题成功',
   'push.error.version': '版本号为纯数字',
+  'push.len.max': '最大长度为{length}',
+  'push.len.empty': '不能为空',
 };

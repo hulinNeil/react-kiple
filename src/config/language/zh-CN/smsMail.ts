@@ -59,6 +59,7 @@ export default {
   'sms.send.delete.success': '删除定时任务成功！',
   'sms.send.status': '任务状态',
   'sms.send.time': '发送时间',
+  'sms.send.select.time': '请选择发送时间',
   'sms.send.no.time': '必须选择发送时间',
   'sms.send.count': '发送用户数',
   'sms.send.to': '收件人',

@@ -3,7 +3,7 @@ import intl from 'react-intl-universal';
 import { useSelector, useDispatch, Dispatch } from 'dva';
 import { Form, Input, Select } from 'antd';
 import ModalForm from '@/components/Form/ModalForm';
-import { validateSMSContent } from '@/utils/validateForm';
+import { validateSMSContent, validateEmptyContent } from '@/utils/validateForm';
 import { SmsTemplatelItem, CreateTemplateParamsType } from '@/services/sms/template';
 import { SmsTemplateState } from '@/models/sms/template';
 import { TemplateKindEnum } from '@/config/smsMail';
@@ -81,8 +81,12 @@ const CreateTemplate: React.FC<{}> = () => {
       onCancel={hideModal}
       onOk={createTemplate}
     >
-      <Form.Item label={intl.get('sms.tpl.name')} name="templateName" rules={[{ required: true, message: intl.get('sms.tpl.no.name') }]}>
-        <Input type="text" placeholder={intl.get('sms.tpl.no.name')} />
+      <Form.Item
+        label={intl.get('sms.tpl.name')}
+        name="templateName"
+        rules={[{ validator: validateEmptyContent.bind(null, intl.get('sms.tpl.no.name')) }]}
+      >
+        <Input type="text" placeholder={intl.get('sms.tpl.edit.name')} />
       </Form.Item>
       <Form.Item label={intl.get('sms.tpl.content')} name="content" rules={[{ validator: validateSMSContent }]}>
         <Input.TextArea placeholder={intl.get('sms.tpl.edit.content')} autoSize={{ minRows: 2 }} />

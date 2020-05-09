@@ -94,7 +94,7 @@ const model: SmsTemplateModel = {
       const kind = payload && payload.kind ? payload.kind : 0;
       const templateState: SmsTemplateState = yield select((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate);
       const { current } = templateState.pagination;
-      const result: SmsTemplateType = yield getSmsTemplateList({ pageNo: current, name, kind });
+      const result: SmsTemplateType = yield getSmsTemplateList({ pageno: current, name, kind });
       if (result && result.code === 0 && result.data) {
         templateState.dataList = result.data.list || [];
         templateState.pagination.total = result.data.totalCount;

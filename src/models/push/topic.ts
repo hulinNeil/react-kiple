@@ -83,7 +83,7 @@ const pushTopicModel: PushTopicModel = {
       });
 
       const { current } = pushTopicState.pagination;
-      const result: PushTopicType = yield getPushTopicList({ pageNo: current });
+      const result: PushTopicType = yield getPushTopicList({ pageno: current });
       if (result && result.code === 0 && result.data) {
         pushTopicState.dataList = result.data.list || [];
         pushTopicState.pagination.total = result.data.totalCount;

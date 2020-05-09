@@ -92,7 +92,7 @@ const smsCronjobModel: SmsCronjobModel = {
         type: 'change',
         payload: { isLoading: true },
       });
-      const result: SmsCronjobType = yield getSmsCronjobList({ pageNo: smsCronjobState.pagination.current });
+      const result: SmsCronjobType = yield getSmsCronjobList({ pageno: smsCronjobState.pagination.current });
       if (result && result.code === 0 && result.data) {
         smsCronjobState.dataList = result.data.list || [];
         smsCronjobState.pagination.total = result.data.totalCount;
@@ -111,7 +111,7 @@ const smsCronjobModel: SmsCronjobModel = {
       });
 
       const { current } = tempListData;
-      const result: SmsTemplateType = yield getSmsTemplateList({ pageNo: current, name: '', kind: 0 });
+      const result: SmsTemplateType = yield getSmsTemplateList({ pageno: current, name: '', kind: 0 });
       if (result && result.code === 0 && result.data && result.data.list) {
         tempListData.tempList.push(...result.data.list);
         tempListData.total = result.data.totalCount;

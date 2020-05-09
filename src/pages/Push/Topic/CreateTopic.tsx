@@ -5,7 +5,7 @@ import { Form, Select, Input } from 'antd';
 import ModalForm from '@/components/Form/ModalForm';
 import { PushTopicCreateParamsType } from '@/services/push/topic';
 import { PushTopicState } from '@/models/push/topic';
-import { validateVersionContent } from '@/utils/validateForm';
+import { validateVersionContent, validateAppName, validateEmptyContent } from '@/utils/validateForm';
 
 const osList = [intl.get('all'), 'Android', 'iOS'];
 interface FormValue {
@@ -70,7 +70,11 @@ const CreatePushTopic = () => {
       onCancel={hideModal}
       onOk={createTopic}
     >
-      <Form.Item label={intl.get('push.topic.name')} name="name" rules={[{ required: true, message: intl.get('push.topic.no.name') }]}>
+      <Form.Item
+        label={intl.get('push.topic.name')}
+        name="name"
+        rules={[{ validator: validateEmptyContent.bind(null, intl.get('push.topic.no.name')) }]}
+      >
         <Input type="text" placeholder={intl.get('push.topic.edit.name')} />
       </Form.Item>
       <Form.Item label={intl.get('push.topic.describe')} name="describe">
@@ -93,8 +97,8 @@ const CreatePushTopic = () => {
       <Form.Item label={intl.get('push.topic.appVersion')} name="appVersion" rules={[{ validator: validateVersionContent }]}>
         <Input placeholder={intl.get('push.topic.edit.appVersion')} />
       </Form.Item>
-      <Form.Item label={intl.get('push.topic.appName')} name="appName">
-        <Input placeholder={intl.get('push.topic.edit.appName')} />
+      <Form.Item label={intl.get('push.topic.appName')} name="appName" rules={[{ validator: validateAppName }]}>
+        <Input placeholder={intl.get('push.topic.edit.appName') + '(1-20)'} />
       </Form.Item>
     </ModalForm>
   );

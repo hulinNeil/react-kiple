@@ -81,6 +81,7 @@ const model: MailTemplateModel = {
         type: 'change',
         payload: {
           editIndex: -1,
+          isShouldRefresh: true,
           confirmLoading: false,
         },
       });
@@ -103,7 +104,7 @@ const model: MailTemplateModel = {
       const kind = payload && payload.kind ? payload.kind : 0;
       const templateState: MailTemplateState = yield select((state: { mailTemplate: MailTemplateState }) => state.mailTemplate);
       const { current } = templateState.pagination;
-      const result: MailTemplateType = yield getMailTemplateList({ pageNo: current, name, kind });
+      const result: MailTemplateType = yield getMailTemplateList({ pageno: current, name, kind });
       if (result && result.code === 0 && result.data) {
         templateState.dataList = result.data.list || [];
         templateState.pagination.total = result.data.totalCount;

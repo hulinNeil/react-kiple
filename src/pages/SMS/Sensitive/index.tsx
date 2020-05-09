@@ -10,6 +10,7 @@ import CustomModal from '@/components/CustomModal';
 import { renderColTime } from '@/components/TableHeader';
 import { getWordList, deleteWord, createWord, SensitiveWordItem, SensitiveWordType } from '@/services/sms/sensitiveword';
 import { ConnectState } from '@/models';
+import { validateEmptyContent } from '@/utils/validateForm';
 import { useInitialList } from '@/utils/hooks';
 import { GetParamsType } from '@/services/common';
 
@@ -19,7 +20,7 @@ const Sensitive = () => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const { isLoading, setLoading, dataList, pagination, setPagination, params } = useInitialList<SensitiveWordType, GetParamsType, SensitiveWordItem>(
     getWordList,
-    { pageNo: 1 },
+    { pageno: 1 },
     []
   );
 
@@ -54,7 +55,7 @@ const Sensitive = () => {
   };
 
   const onPaginationChang = (e: PaginationConfig) => {
-    params.current.pageNo = e.current || 1;
+    params.current.pageno = e.current || 1;
     setPagination({ ...pagination, current: e.current || 1 });
   };
 
@@ -117,7 +118,11 @@ const Sensitive = () => {
         onCancel={onCancel}
         onOk={createSensitiveWord}
       >
-        <Form.Item label={intl.get('sms.sensitive')} name="word" rules={[{ required: true, message: intl.get('sms.sensitive.no.create') }]}>
+        <Form.Item
+          label={intl.get('sms.sensitive')}
+          name="word"
+          rules={[{ validator: validateEmptyContent.bind(null, intl.get('sms.sensitive.no.create')) }]}
+        >
           <Input type="text" placeholder={intl.get('sms.sensitive.create.placeholder')} />
         </Form.Item>
       </ModalForm>

@@ -9,6 +9,7 @@ import { defaultPlaceholderImage } from '@/config';
 import { PushCronjobState } from '@/models/push/cronjob';
 import { PushCreateParamsType } from '@/services/push/cronjob';
 import './index.less';
+import { validatePushContentLength } from '@/utils/validateForm';
 
 interface ImgStatus {
   help: string;
@@ -47,7 +48,7 @@ const Create: React.FC<{}> = () => {
       topic: topicList[e.topic].id,
       title: e.title,
       content: e.content,
-      body: isShowFields && body ? JSON.stringify(body) : '{}',
+      body: isShowFields && body ? body : '{}',
       picUrl: '',
       sendTime: Number(e.sendTime.format('x')),
     };
@@ -88,6 +89,10 @@ const Create: React.FC<{}> = () => {
     if (value && !reg.test(value)) {
       setImgStatus({ help: intl.get('push.msg.error.img'), validateStatus: 'error' });
     } else {
+      if (value.length > 1000) {
+        setImgStatus({ help: intl.get('push.max.len', { length: 1000 }), validateStatus: 'error' });
+        return;
+      }
       if (value) {
         setPreviewImg(value);
       }
@@ -111,6 +116,7 @@ const Create: React.FC<{}> = () => {
       getTopicList();
     }
     return () => {
+      console.log('改变isShouldRefresh');
       dispatch({
         type: 'pushCronjob/change',
         payload: { isShouldRefresh: true },
@@ -125,11 +131,11 @@ const Create: React.FC<{}> = () => {
           <div className="push-editor">
             {/* 输入任务相关数据(Enter task-related data) */}
             <div className="push-editor-form">
-              <Form.Item label={intl.get('push.msg.title')} name="title" rules={[{ required: true, message: intl.get('push.msg.no.title') }]}>
-                <Input type="text" placeholder={intl.get('push.msg.title')} onChange={onTitleChange} />
+              <Form.Item label={intl.get('push.msg.title')} name="title" rules={[{ validator: validatePushContentLength.bind(null, 20) }]}>
+                <Input type="text" placeholder={intl.get('push.msg.title') + '(1-20)'} onChange={onTitleChange} />
               </Form.Item>
-              <Form.Item label={intl.get('push.msg.content')} name="content" rules={[{ required: true, message: intl.get('push.msg.no.content') }]}>
-                <Input.TextArea placeholder={intl.get('push.msg.edit.content')} onChange={onContentChange} autoSize={{ minRows: 2 }} />
+              <Form.Item label={intl.get('push.msg.content')} name="content" rules={[{ validator: validatePushContentLength.bind(null, 200) }]}>
+                <Input.TextArea placeholder={intl.get('push.msg.edit.content') + '(1-200)'} onChange={onContentChange} autoSize={{ minRows: 2 }} />
               </Form.Item>
               <Form.Item label={intl.get('push.msg.img')} name="image" help={imgStatus.help} validateStatus={imgStatus.validateStatus}>
                 <Input placeholder={intl.get('push.msg.edit.img') + ': https://yourapp.com/image.png'} onChange={onImageChange} />
@@ -137,7 +143,8 @@ const Create: React.FC<{}> = () => {
               <Form.Item label={intl.get('push.msg.to')} name="topic" rules={[{ required: true, message: intl.get('sms.tpl.no.name') }]}>
                 <Select
                   dropdownRender={(menu) => <div className="mail-tpl-select">{menu}</div>}
-                  notFoundContent={intl.get('sms.send.no.tpl')}
+                  notFoundContent={intl.get('push.msg.no.to')}
+                  placeholder={intl.get('push.msg.select.to')}
                   loading={topicLoading}
                   onPopupScroll={onPopupScroll}
                 >
@@ -150,6 +157,7 @@ const Create: React.FC<{}> = () => {
               </Form.Item>
               <Form.Item label={intl.get('sms.send.time')} name="sendTime" rules={[{ required: true, message: intl.get('sms.send.no.time') }]}>
                 <DatePicker
+                  placeholder={intl.get('sms.send.select.time')}
                   format="YYYY-MM-DD HH:mm:ss"
                   disabledDate={(current) => current && current < moment()}
                   showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}

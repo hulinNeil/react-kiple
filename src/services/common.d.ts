@@ -16,5 +16,5 @@ export interface DelParamsType {
 }
 
 export interface GetParamsType {
-  pageNo: number;
+  pageno: number;
 }
