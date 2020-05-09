@@ -122,7 +122,7 @@ router.delete('/web/delsensitiveword', (req, res) => {
   }, 1000);
 });
 router.get('/web/sensitivewordlist', (req, res) => {
-  const pageNo = Number(req.query.pageNo);
+  const pageNo = Number(req.query.pageno);
   setTimeout(() => {
     res.json({
       code: 0,
@@ -181,7 +181,7 @@ router.delete('/web/:ms/deltemplate', (req, res) => {
   }, 1000);
 });
 router.get('/web/:ms/templatelist', (req, res) => {
-  const pageNo = Number(req.query.pageNo);
+  const pageNo = Number(req.query.pageno);
   const list = req.params.ms === 'sms' ? smsTplList : mailTplList;
   setTimeout(() => {
     res.json({
@@ -236,7 +236,7 @@ router.delete('/web/:ms/delcronjob', (req, res) => {
   }, 1000);
 });
 router.get('/web/:ms/cronjoblist', (req, res) => {
-  const pageNo = Number(req.query.pageNo);
+  const pageNo = Number(req.query.pageno);
   const ms = req.params.ms;
   const list = ms === 'sms' ? smsCronjob : ms === 'mail' ? mailCronjob : pushCronjob;
   setTimeout(() => {
@@ -311,7 +311,7 @@ router.delete('/web/push/deltopic', (req, res) => {
   }, 1000);
 });
 router.get('/web/push/topiclist', (req, res) => {
-  const pageNo = Number(req.query.pageNo);
+  const pageNo = Number(req.query.pageno);
   setTimeout(() => {
     res.json({
       code: 0,

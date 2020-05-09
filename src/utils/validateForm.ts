@@ -1,5 +1,7 @@
 import intl from 'react-intl-universal';
 
+// ant design form validate
+
 export const validateMailContent = (rule: any, value: string) => {
   value = value.trim();
   let msg = '';
