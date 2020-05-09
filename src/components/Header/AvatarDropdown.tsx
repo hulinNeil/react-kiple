@@ -1,30 +1,49 @@
 import React from 'react';
 import { router, Dispatch, useSelector, useDispatch } from 'dva';
+import { RouteComponentProps } from 'dva/router';
+import { History } from 'history';
 import { Avatar, Menu, Spin, Dropdown } from 'antd';
-import { DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { DownOutlined, LogoutOutlined, AccountBookOutlined, UserOutlined } from '@ant-design/icons';
 import { ConnectState } from '@/models/index';
 import './index.less';
 
 const { withRouter } = router;
 
-const AvatarDropdown: React.FC<{}> = () => {
+interface AvatarDropdownProp extends RouteComponentProps {
+  history: History;
+}
+
+const AvatarDropdown: React.FC<AvatarDropdownProp> = ({ history }) => {
   const userInfo = useSelector((state: ConnectState) => state.user.userInfo);
   const dispatch = useDispatch<Dispatch>();
-
+  const selectKey = location.pathname.split('/')[1];
   const bindClick = (e: { key: string }): void => {
-    if (e.key === 'logout') {
-      dispatch({
-        type: 'user/logout',
-      });
+    if (selectKey === e.key) {
+      return;
+    }
+    switch (e.key) {
+      case 'logout':
+        dispatch({
+          type: 'user/logout',
+        });
+        break;
+      case 'account':
+        history.push('/account');
+        break;
+      case 'merchant':
+        history.push('/merchant');
+        break;
+      default:
+        break;
     }
   };
   const menuHeaderDropdown = (
-    <Menu onClick={bindClick}>
-      <Menu.Item key="center">
+    <Menu onClick={bindClick} selectedKeys={[selectKey]}>
+      <Menu.Item key="account">
         <UserOutlined /> 个人中心
       </Menu.Item>
-      <Menu.Item key="settings">
-        <SettingOutlined /> 个人设置
+      <Menu.Item key="merchant">
+        <AccountBookOutlined /> 商户中心
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">

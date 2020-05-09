@@ -4,20 +4,19 @@ const menuList = [
     icon: 'https://main.qcloudimg.com/image/product/500/16_16/gray.svg',
     children: [
       {
-        title: '商户管理',
-        key: '/merchant',
-        icon:
-          'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
+        title: '个人中心',
+        key: '/account',
+        icon: 'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
         children: [
           {
-            title: '用户管理',
-            key: '/merchant/user',
+            title: '信息管理',
+            key: '/account/overview',
             icon: 'MailOutlined',
           },
           {
-            title: '角色管理',
-            key: '/merchant/role',
-            icon: '',
+            title: '安全设置',
+            key: '/account/security',
+            icon: 'MailOutlined',
           },
         ],
       },
@@ -43,13 +42,13 @@ const menuList = [
             icon: 'UnorderedListOutlined',
           },
           {
-            title:'群发短信',
-            key:'/sms/mass-send',
+            title: '群发短信',
+            key: '/sms/mass-send',
             icon: 'MailOutlined',
           },
           {
-            title:'已发短信',
-            key:'/sms/history',
+            title: '已发短信',
+            key: '/sms/history',
             icon: 'MailOutlined',
           },
           {
@@ -58,7 +57,8 @@ const menuList = [
             icon: 'WarningOutlined',
           },
         ],
-      },{
+      },
+      {
         title: '邮件服务',
         key: '/mail',
         icon: 'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
@@ -74,13 +74,13 @@ const menuList = [
             icon: 'UnorderedListOutlined',
           },
           {
-            title:'群发邮件',
-            key:'/mail/mass-send',
+            title: '群发邮件',
+            key: '/mail/mass-send',
             icon: 'MailOutlined',
           },
           {
-            title:'已发邮件',
-            key:'/mail/history',
+            title: '已发邮件',
+            key: '/mail/history',
             icon: 'MailOutlined',
           },
           {

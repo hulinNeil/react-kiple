@@ -15,16 +15,16 @@ function RouterConfig({ history, app }: any) {
     component: () => import(/* webpackChunkName:"Login" */ '@/pages/Login'),
   });
 
-  const Admin = dynamic({
+  const Index = dynamic({
     app,
-    component: () => import(/* webpackChunkName:"Admin" */ '@/pages/Admin'),
+    component: () => import(/* webpackChunkName:"Index" */ '@/pages/Index'),
   });
 
   return (
     <Router history={history}>
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/" component={Admin} />
+        <Route path="/" component={Index} />
         <Redirect to="/" />
       </Switch>
     </Router>

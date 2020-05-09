@@ -22,6 +22,7 @@ const Charts = React.lazy(() => import(/* webpackChunkName:"Charts" */ '../Chart
 const SMS = React.lazy(() => import(/* webpackChunkName:"SMS" */ '../SMS'));
 const Mail = React.lazy(() => import(/* webpackChunkName:"Mail" */ '../Mail'));
 const Push = React.lazy(() => import(/* webpackChunkName:"Push" */ '../Push'));
+const Account = React.lazy(() => import(/* webpackChunkName:"Account" */ '../Account'));
 
 const Index: React.FC<IndexProps> = ({ history }) => {
   const currentMenuIndex = useSelector((state: ConnectState) => state.admin.currentMenuIndex);
@@ -76,6 +77,7 @@ const Index: React.FC<IndexProps> = ({ history }) => {
             <Route path="/sms" component={SMS} />
             <Route path="/mail" component={Mail} />
             <Route path="/push" component={Push} />
+            <Route path="/account" component={Account} />
             <Redirect to="/" />
           </Switch>
         </React.Suspense>

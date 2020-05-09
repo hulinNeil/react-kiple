@@ -4,19 +4,46 @@ const menuList = [
     icon: 'https://main.qcloudimg.com/image/product/500/16_16/gray.svg',
     children: [
       {
-        title: '商户管理',
+        title: '商户中心',
         key: '/merchant',
         icon: 'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
         children: [
+          {
+            title: '信息管理',
+            key: '/merchant/overview',
+            icon: 'MailOutlined',
+          },
+          {
+            title: '子商户管理',
+            key: '/merchant/sub',
+            icon: 'MailOutlined',
+          },
           {
             title: '用户管理',
             key: '/merchant/user',
             icon: 'MailOutlined',
           },
           {
-            title: '角色管理',
-            key: '/merchant/role',
-            icon: '',
+            title: '安全设置',
+            key: '/merchant/security',
+            icon: 'MailOutlined',
+          },
+        ],
+      },
+      {
+        title: '个人中心',
+        key: '/account',
+        icon: 'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
+        children: [
+          {
+            title: '信息管理',
+            key: '/account/overview',
+            icon: 'MailOutlined',
+          },
+          {
+            title: '安全设置',
+            key: '/account/security',
+            icon: 'MailOutlined',
           },
         ],
       },
