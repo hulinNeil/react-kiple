@@ -30,6 +30,19 @@ export const inputDebounce = (fn: (e: React.ChangeEvent<HTMLInputElement>) => vo
   };
 };
 
+export const getStringLngth = (str: string) => {
+  let i, sum;
+  sum = 0;
+  for (i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) >= 0 && str.charCodeAt(i) <= 255) {
+      sum = sum + 1;
+    } else {
+      sum = sum + 2;
+    }
+  }
+  return sum;
+};
+
 export const openNewWindow = (htmlString: string) => {
   const reviewWindow: any = window.open();
   reviewWindow.document.body.innerHTML = htmlString;

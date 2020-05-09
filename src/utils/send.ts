@@ -37,9 +37,8 @@ axios.interceptors.response.use(
       return Promise.reject(false);
     }
     // 统一处理服务端返回的错误(Uniformly handles errors returned by the server)
-    if (response && response.data && response.data.code !== 0 && response.data.message) {
-      console.log('=======', response.data.message);
-      message.error(response.data.message);
+    if (response && response.data && response.data.code !== 0 && response.data.msg) {
+      message.error(response.data.msg);
     }
     return response;
   },

@@ -19,8 +19,8 @@ module.exports = {
   quiet: true,
   proxy: {
     "/web": {
-      target: "http://localhost:3100/",
-      // target: "http://192.168.1.129:8080/",
+      // target: "http://localhost:3100/",
+      target: "http://192.168.1.126:8080/",
       secure: true,
       changeOrigin: true,
       pathRewrite: {

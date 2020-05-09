@@ -10,3 +10,7 @@ export const renderColStatus = (status: number) => <span>{intl.get(HistoryStatus
 export const renderColCount = (to: string) => <span>{to.split(',').length - 1}</span>;
 
 export const renderColKind = (kind: number) => <span>{intl.get(TemplateKindEnum[kind])}</span>;
+
+export const renderColOS = (os: string) => <span>{os === 'android' ? 'Android' : os === 'ios' ? 'iOS' : 'Android + iOS'}</span>;
+
+export const renderColPushVersion = (version: string) => <span>{!version ? intl.get('all') : version}</span>;

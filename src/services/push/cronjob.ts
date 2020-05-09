@@ -6,11 +6,7 @@ export interface PushCreateParamsType {
   topic: number;
   title: string;
   content: string;
-  body:
-    | ''
-    | {
-        [key: string]: string;
-      };
+  body: string;
   picUrl: string;
   sendTime: number;
 }

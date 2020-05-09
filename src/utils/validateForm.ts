@@ -83,3 +83,14 @@ export const validateSMSContent = (rule: any, value: string) => {
   }
   return msg ? Promise.reject(msg) : Promise.reject();
 };
+
+export const validateVersionContent = (rule: any, value: string) => {
+  let msg = '';
+  if (value) {
+    value = value.trim();
+    if (!/^\d+$/gi.test(value)) {
+      msg = intl.get('push.error.version');
+    }
+  }
+  return msg ? Promise.reject(msg) : Promise.reject();
+};

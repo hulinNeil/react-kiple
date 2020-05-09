@@ -1,20 +1,19 @@
 import { message } from 'antd';
 import intl from 'react-intl-universal';
 import { Model } from 'dva';
-import { getSmsTemplateList, SmsTemplatelItem, SmsTemplateType } from '@/services/sms/template';
-import { SmsCronjobItem, SmsCronjobType } from '@/services/sms/cronjob';
-import { createPushCronjob, deletePushCronjob, getPushCronjobList } from '@/services/push/cronjob';
 import { Pagination } from '@/models/common';
+import { createPushCronjob, deletePushCronjob, getPushCronjobList, PushCronjobItem, PushCronjobType } from '@/services/push/cronjob';
+import { getPushTopicList, PushTopicType, PushTopicItem } from '@/services/push/topic';
 
 interface TopicListData {
   current: number;
   total: number;
   topicLoading: boolean;
-  topicList: SmsTemplatelItem[];
+  topicList: PushTopicItem[];
 }
 
 export interface PushCronjobState {
-  dataList: SmsCronjobItem[];
+  dataList: PushCronjobItem[];
   isLoading: boolean;
   confirmLoading: boolean;
   // 当isShouldRefresh为true时，list初始化是才可以进行获取数据，当跳转create页面时，需要将这个值设为false，然后返回时，才不会刷新页面
@@ -52,7 +51,7 @@ const pushCronjobModel: PushCronjobModel = {
     },
     reset(state) {
       const syncSate = JSON.parse(JSON.stringify(initState));
-      delete syncSate.tempListData;
+      delete syncSate.topicListData;
       return { ...state, ...syncSate };
     },
   },
@@ -92,7 +91,7 @@ const pushCronjobModel: PushCronjobModel = {
         type: 'change',
         payload: { isLoading: true },
       });
-      const result: SmsCronjobType = yield getPushCronjobList({ pageNo: pushCronjobState.pagination.current });
+      const result: PushCronjobType = yield getPushCronjobList({ pageNo: pushCronjobState.pagination.current });
       if (result && result.code === 0 && result.data) {
         pushCronjobState.dataList = result.data.list || [];
         pushCronjobState.pagination.total = result.data.totalCount;
@@ -111,7 +110,7 @@ const pushCronjobModel: PushCronjobModel = {
       });
 
       const { current } = topicListData;
-      const result: SmsTemplateType = yield getSmsTemplateList({ pageNo: current, name: '', kind: 0 });
+      const result: PushTopicType = yield getPushTopicList({ pageNo: current });
       if (result && result.code === 0 && result.data && result.data.list) {
         topicListData.topicList.push(...result.data.list);
         topicListData.total = result.data.totalCount;

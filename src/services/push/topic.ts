@@ -3,36 +3,36 @@ import { ResponseType, DelParamsType, GetParamsType } from '../common';
 
 // 主题相关API(topic API)
 
-export interface TopicCreateParamsType {
+export interface PushTopicCreateParamsType {
   name: string;
   describe: string;
-  os: string;
-  osVersion: string; // 8.0
-  appVersion: string; // 1.0.2
+  os: string; // android,ios,all('') 
+  osVersion: number; // 8.0
+  appVersion: number; // 1.0.2
   appName: string;
 }
 
-export interface TopicItemType extends TopicCreateParamsType {
+export interface PushTopicItem extends PushTopicCreateParamsType {
   id: number;
   editTime: number;
 }
 
-export interface TopicType extends ResponseType {
+export interface PushTopicType extends ResponseType {
   data: {
     totalCount: number;
     pageNo: number;
-    list: TopicItemType[];
+    list: PushTopicItem[];
   };
 }
 
-export const createWord = (params: TopicCreateParamsType): Promise<ResponseType> => {
+export const createPushTopic = (params: PushTopicCreateParamsType): Promise<ResponseType> => {
   return post('/push/newtopic', params);
 };
 
-export const deleteWord = (params: DelParamsType): Promise<ResponseType> => {
+export const deletePushTopic = (params: DelParamsType): Promise<ResponseType> => {
   return del('/push/deltopic', params);
 };
 
-export const getWordList = (params: GetParamsType): Promise<TopicType> => {
+export const getPushTopicList = (params: GetParamsType): Promise<PushTopicType> => {
   return get('/push/topiclist', params);
 };

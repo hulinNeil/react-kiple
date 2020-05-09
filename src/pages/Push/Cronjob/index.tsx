@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { Card, Button, Table } from 'antd';
+import { ColumnProps } from 'antd/es/table';
+import { PaginationConfig } from 'antd/es/pagination';
 import { router, useSelector, useDispatch, Dispatch } from 'dva';
 import { RouteComponentProps } from 'dva/router';
 import { History } from 'history';
@@ -8,12 +10,9 @@ import Page from '@/components/Page';
 import CustomModal from '@/components/CustomModal';
 import CartTitleForm from '@/components/Form/CardTitileForm';
 import { renderColTime, renderColStatus } from '@/components/TableHeader';
-import { ColumnProps } from 'antd/es/table';
 import { ConnectState } from '@/models';
-import { MailTemplateItem } from '@/services/mail/template';
-import { PaginationConfig } from 'antd/es/pagination';
-import { PushCronjobState } from '@/models/push/record';
-import { SmsCronjobItem } from '@/services/sms/cronjob';
+import { PushCronjobState } from '@/models/push/cronjob';
+import { PushCronjobItem } from '@/services/push/cronjob';
 
 interface TemplateProps extends RouteComponentProps {
   history: History;
@@ -37,7 +36,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   };
 
   // delete push cronjob
-  const handleDel = ({ id, templateName }: MailTemplateItem) => {
+  const handleDel = ({ id }: PushCronjobItem) => {
     CustomModal.warning({
       title: intl.get('push.msg.delete'),
       content: intl.get('push.msg.delete.title'),
@@ -84,7 +83,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
   }, []);
 
   const title = permission === 1 && <CartTitleForm title={intl.get('push.record.create')} onLeftClick={jumpCreatePage}></CartTitleForm>;
-  const renderColButton = (item: MailTemplateItem) => {
+  const renderColButton = (item: PushCronjobItem) => {
     return (
       <Button size="small" onClick={() => handleDel(item)}>
         {intl.get('delete')}
@@ -92,7 +91,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
     );
   };
   // table header
-  const columns: ColumnProps<SmsCronjobItem>[] = [
+  const columns: ColumnProps<PushCronjobItem>[] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -108,7 +107,7 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
     },
     {
       title: intl.get('push.msg.to'),
-      dataIndex: 'to',
+      dataIndex: 'topic',
     },
     {
       title: intl.get('push.msg.sendTime'),
@@ -122,7 +121,8 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
       render: renderColStatus,
     },
   ];
-  if (permission === 1) { // check user permission
+  if (permission === 1) {
+    // check user permission
     columns.push({
       title: intl.get('sms.tpl.operate'),
       render: renderColButton,

@@ -6,7 +6,7 @@ import { Card, Form, Input, Button, Select, Switch, DatePicker } from 'antd';
 import Page from '@/components/Page';
 import MultipleColumnsForm, { useMcForm } from '@/components/Form/MultipleColumnsForm';
 import { defaultPlaceholderImage } from '@/config';
-import { PushCronjobState } from '@/models/push/record';
+import { PushCronjobState } from '@/models/push/cronjob';
 import { PushCreateParamsType } from '@/services/push/cronjob';
 import './index.less';
 
@@ -47,7 +47,7 @@ const Create: React.FC<{}> = () => {
       topic: topicList[e.topic].id,
       title: e.title,
       content: e.content,
-      body: isShowFields && body ? body : '',
+      body: isShowFields && body ? JSON.stringify(body) : '{}',
       picUrl: '',
       sendTime: Number(e.sendTime.format('x')),
     };
@@ -143,7 +143,7 @@ const Create: React.FC<{}> = () => {
                 >
                   {topicList.map((value, index) => (
                     <Select.Option key={`tpl-${index}`} value={index}>
-                      {value.templateName}
+                      {value.name}
                     </Select.Option>
                   ))}
                 </Select>

@@ -9,6 +9,7 @@ const mailCronjob = [];
 const smsCronjob = [];
 const pushCronjob = [];
 const smsHistory = [];
+const pushTopic = [];
 const sensitivelList = [
   { word: 'asd13', editTime: 1587870807859, id: 13 },
   { word: 'asd12', editTime: 1587870807859, id: 12 },
@@ -285,4 +286,42 @@ router.get('/web/:sms/businesslist', (req, res) => {
   }, 1000);
 });
 
+router.post('/web/push/newtopic', (req, res) => {
+  const item = Object.assign(req.body, {
+    lastEditTime: new Date().getTime(),
+    id: pushTopic[0] ? pushTopic[0].id + 1 : 1,
+  });
+  pushTopic.unshift(item);
+  setTimeout(() => {
+    res.json({
+      code: 0,
+      message: 'success',
+    });
+  }, 1000);
+});
+router.delete('/web/push/deltopic', (req, res) => {
+  const id = Number(req.query.id);
+  const index = pushTopic.findIndex((item) => item.id === id);
+  pushTopic.splice(index, 1);
+  setTimeout(() => {
+    res.json({
+      code: 0,
+      message: 'success',
+    });
+  }, 1000);
+});
+router.get('/web/push/topiclist', (req, res) => {
+  const pageNo = Number(req.query.pageNo);
+  setTimeout(() => {
+    res.json({
+      code: 0,
+      message: 'success',
+      data: {
+        totalCount: pushTopic.length,
+        pageNo,
+        list: pushTopic.slice((pageNo - 1) * 10, pageNo * 10),
+      },
+    });
+  }, 1000);
+});
 module.exports = router;
