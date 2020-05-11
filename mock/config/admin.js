@@ -23,11 +23,6 @@ const menuList = [
             key: '/merchant/user',
             icon: 'MailOutlined',
           },
-          {
-            title: '安全设置',
-            key: '/merchant/security',
-            icon: 'MailOutlined',
-          },
         ],
       },
       {
@@ -38,11 +33,6 @@ const menuList = [
           {
             title: '信息管理',
             key: '/account/overview',
-            icon: 'MailOutlined',
-          },
-          {
-            title: '安全设置',
-            key: '/account/security',
             icon: 'MailOutlined',
           },
         ],

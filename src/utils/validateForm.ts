@@ -103,7 +103,9 @@ export const validateAppName = (rule: any, value: string) => {
   }
   return msg ? Promise.reject(msg) : Promise.reject();
 };
-export function validatePushContentLength(...args: any[]) {
+
+// use: validatePushContentLength.bind(null,20)
+export const validatePushContentLength = (...args: any[]) => {
   let msg = '';
   const value = args[2] ? args[2].trim() : '';
   if (!value) {
@@ -114,8 +116,9 @@ export function validatePushContentLength(...args: any[]) {
     }
   }
   return msg ? Promise.reject(msg) : Promise.reject();
-}
+};
 
+// use: validateEmptyContent.bind(null,'xxxxx')
 export const validateEmptyContent = (...args: any[]) => {
   let msg = '';
   const value = args[2] ? args[2].trim() : '';

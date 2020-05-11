@@ -1,0 +1,63 @@
+.account-overview {
+  .base {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ddd;
+    padding: 14px 0;
+    .avatar {
+      margin-right: 30px;
+      width: 120px;
+      text-align: center;
+      &-img {
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+        margin-bottom: 10px;
+        position: relative;
+        .avatar-uploading {
+          position: absolute;
+          top: 48px;
+          left: 48px;
+          font-size: 24px;
+        }
+      }
+    }
+    .summary {
+      line-height: 32px;
+    }
+  }
+  .edit {
+    line-height: 1;
+    color: #06c;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .set-list {
+    & > li {
+      padding: 33px;
+      border-top: 1px dashed #e1e6eb;
+      text-align: left;
+      display: flex;
+      flex-direction: row;
+      &:first-child {
+        border: none;
+      }
+      .set-left {
+        width: 140px;
+      }
+      .set-desc {
+        flex: 1;
+        color: #999;
+        .text-primary {
+          color: #f60;
+        }
+      }
+      .set-right {
+        text-align: right;
+        width: 140px;
+      }
+    }
+  }
+}
