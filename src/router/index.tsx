@@ -12,7 +12,7 @@ function RouterConfig({ history, app }: any) {
   // 动态加载
   const Login = dynamic({
     app,
-    component: () => import(/* webpackChunkName:"Login" */ '@/pages/Login'),
+    component: () => import(/* webpackChunkName:"Login" */ '@/pages/Account/Login'),
   });
 
   const Index = dynamic({
