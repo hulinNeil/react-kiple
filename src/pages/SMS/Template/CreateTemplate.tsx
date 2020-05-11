@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import intl from 'react-intl-universal';
 import { useSelector, useDispatch, Dispatch } from 'dva';
 import { Form, Input, Select } from 'antd';
@@ -14,32 +14,8 @@ const CreateTemplate: React.FC<{}> = () => {
   const confirmLoading = useSelector((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate.confirmLoading);
   const dataList = useSelector((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate.dataList);
   const editIndex = useSelector((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate.editIndex);
-  const businessData = useSelector((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate.businessData);
   const dispatch = useDispatch<Dispatch>();
   const [form] = Form.useForm();
-
-  // set system value when select sms business
-  const onBusinessSelectChange = (e: string) => {
-    const index = businessData.rawData.findIndex((item) => item.buKind === e);
-    dispatch({
-      type: 'smsTemplate/change',
-      payload: {
-        businessData: { ...businessData, curIndex: index },
-      },
-    });
-    const fields = form.getFieldsValue();
-    fields.buSystem = businessData.rawData[index].children[0];
-    form.setFieldsValue(fields);
-  };
-
-  // get sms business-system list
-  useEffect(() => {
-    if (dialogVisible && !businessData.isLoadedData) {
-      dispatch({
-        type: 'smsTemplate/getBusinessData',
-      });
-    }
-  }, [dialogVisible]);
 
   const hideModal = () => {
     dispatch({
@@ -53,14 +29,13 @@ const CreateTemplate: React.FC<{}> = () => {
   };
   // create sms template
   const createTemplate = async (item: SmsTemplatelItem) => {
-    const { templateName, content, buKind, buSystem, kind } = item;
-    const buItem = businessData.rawData.find((e) => e.buKind === buKind);
+    const { templateName, content, buSystem, kind } = item;
     const placeholderList = content.match(/{\d+}/gi);
     const payload: CreateTemplateParamsType = {
       templateName,
       content,
       kind,
-      buId: buItem && buItem.buId ? buItem.buId : 0,
+      buId: 0,
       buSystem,
       rule: 1,
       channel: 1,
@@ -101,27 +76,6 @@ const CreateTemplate: React.FC<{}> = () => {
               </Select.Option>
             ))}
         </Select>
-      </Form.Item>
-      <Form.Item label={intl.get('sms.tpl.business')} required={true} className="business-view">
-        <Form.Item name="buKind" rules={[{ required: true, message: intl.get('sms.tpl.no.business') }]}>
-          <Select placeholder={intl.get('sms.tpl.select.business')} loading={businessData.isLoading} onChange={onBusinessSelectChange}>
-            {businessData.rawData.map((value, index) => (
-              <Select.Option key={`bus-${index}`} value={value.buKind}>
-                {value.buKind}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item name="buSystem" rules={[{ required: true, message: intl.get('sms.tpl.no.system') }]}>
-          <Select placeholder={intl.get('sms.tpl.select.system')} loading={businessData.isLoading}>
-            {businessData.rawData[businessData.curIndex] &&
-              businessData.rawData[businessData.curIndex].children.map((value, index) => (
-                <Select.Option key={`bus-${index}`} value={value}>
-                  {value}
-                </Select.Option>
-              ))}
-          </Select>
-        </Form.Item>
       </Form.Item>
     </ModalForm>
   );

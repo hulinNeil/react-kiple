@@ -20,10 +20,16 @@ function RouterConfig({ history, app }: any) {
     component: () => import(/* webpackChunkName:"Index" */ '@/pages/Index'),
   });
 
+  const RetrievePwd = dynamic({
+    app,
+    component: () => import(/* webpackChunkName:"RetrievePwd" */ '@/pages/Account/RetrievePwd'),
+  });
+
   return (
     <Router history={history}>
       <Switch>
         <Route path="/login" component={Login} />
+        <Route path="/password_reset" component={RetrievePwd} />
         <Route path="/" component={Index} />
         <Redirect to="/" />
       </Switch>

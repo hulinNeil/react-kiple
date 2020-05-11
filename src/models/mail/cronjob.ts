@@ -48,11 +48,9 @@ const mailCronjobModel: MailCronjobModel = {
     change(state, { payload }: any) {
       return { ...state, ...payload };
     },
-    reset(state) {
+    reset() {
       const syncSate = JSON.parse(JSON.stringify(initState));
-      // Do't reset the tempListData to reduce requests
-      delete syncSate.tempListData;
-      return { ...state, ...syncSate };
+      return { ...syncSate };
     },
   },
   effects: {

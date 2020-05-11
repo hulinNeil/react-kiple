@@ -48,10 +48,9 @@ const smsCronjobModel: SmsCronjobModel = {
     change(state, { payload }: any) {
       return { ...state, ...payload };
     },
-    reset(state) {
+    reset() {
       const syncSate = JSON.parse(JSON.stringify(initState));
-      delete syncSate.tempListData;
-      return { ...state, ...syncSate };
+      return { ...syncSate };
     },
   },
   effects: {

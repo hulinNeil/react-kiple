@@ -4,8 +4,8 @@ import { storage, delUserStorage } from '@/utils/tools';
 
 export interface UserState {
   loggedIn: boolean;
+  isAccount: boolean;
   submitting: false;
-  remember: boolean;
   userInfo: {
     userName: string;
     avatar: string;
@@ -21,8 +21,8 @@ const model: UserModel = {
   namespace: 'user',
   state: {
     loggedIn: false,
+    isAccount: true,
     submitting: false,
-    remember: true,
     userInfo: {
       userName: '',
       permission: 2,
@@ -35,21 +35,18 @@ const model: UserModel = {
     },
   },
   effects: {
-    *login({ payload }, { call, put, select }) {
+    *login({ payload }, { call, put }) {
       yield put({
         type: 'change',
         payload: { submitting: true },
       });
       const data: api.UserInfoType = yield call(api.login, payload);
       if (data && data.code === 0) {
-        const remember = yield select((state: { user: UserState }) => state.user.remember);
         const userInfo = {
           userName: data.data.username,
           permission: data.data.permission,
         };
-        if (remember) {
-          storage.setItem('user_key', userInfo);
-        }
+        storage.setItem('user_key', userInfo);
         storage.setItem('menu_list', data.data.menu);
         yield put({
           type: 'change',
@@ -75,6 +72,9 @@ const model: UserModel = {
         payload: { loggedIn: false, user: null },
       });
       yield put(routerRedux.push('/login'));
+    },
+    getCaptcha({ payload }) {
+      console.log('获取验证码', payload);
     },
     *checkStatus({ payload }, { put }) {
       // yield call(api.check);

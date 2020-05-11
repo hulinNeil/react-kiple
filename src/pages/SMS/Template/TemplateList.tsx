@@ -143,11 +143,6 @@ const TemplateList: React.FC<{}> = () => {
       width: 150,
       render: renderColTime,
     },
-    {
-      title: intl.get('sms.tpl.system'),
-      dataIndex: 'buSystem',
-      width: 100,
-    },
   ];
   if (permission === 1) { // check user permission to show operate button
     columns.push({

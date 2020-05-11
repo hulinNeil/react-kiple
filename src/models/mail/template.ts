@@ -9,8 +9,7 @@ import {
   createMailTemplate,
 } from '@/services/mail/template';
 import { Model } from 'dva';
-import { Pagination, BusinessData } from '@/models/common';
-import { getMailBusinessList, MailBusinessType } from '@/services/mail/business';
+import { Pagination } from '@/models/common';
 
 export interface MailTemplateState {
   dataList: MailTemplateItem[];
@@ -21,7 +20,6 @@ export interface MailTemplateState {
   isShouldRefresh: boolean;
   editIndex: number;
   pagination: Pagination;
-  businessData: BusinessData;
 }
 
 export interface MailTemplateModel extends Model {
@@ -35,12 +33,6 @@ const initState: MailTemplateState = {
   isShouldRefresh: true,
   editIndex: -1,
   pagination: { defaultPageSize: 10, total: 0, current: 1 },
-  businessData: {
-    isLoading: false,
-    isLoadedData: false,
-    curIndex: 0,
-    rawData: [],
-  },
 };
 
 const model: MailTemplateModel = {
@@ -113,37 +105,6 @@ const model: MailTemplateModel = {
       yield put({
         type: 'change',
         payload: { ...templateState },
-      });
-    },
-    *getBusinessData(_, { put, select }) {
-      const { businessData, editIndex, dataList }: MailTemplateState = yield select(
-        (state: { mailTemplate: MailTemplateState }) => state.mailTemplate
-      );
-      yield put({
-        type: 'change',
-        payload: { businessData: { ...businessData, isLoading: true } },
-      });
-      const result: MailBusinessType = yield getMailBusinessList();
-      if (result && result.code === 0 && result.data) {
-        const list = result.data.list || [];
-        list.forEach((item) => {
-          const { buKind, buId, buSystem } = item;
-          const index = businessData.rawData.findIndex((e) => e.buKind === buKind);
-          if (index === -1) {
-            businessData.rawData.push({ buKind, buId, children: [buSystem] });
-          } else {
-            businessData.rawData[index].children.push(buSystem);
-          }
-        });
-        if (editIndex !== -1) {
-          businessData.curIndex = businessData.rawData.findIndex((raw) => raw.buKind === dataList[editIndex].buKind);
-        }
-        businessData.isLoadedData = true;
-      }
-      businessData.isLoading = false;
-      yield put({
-        type: 'change',
-        payload: { businessData: { ...businessData } },
       });
     },
   },

@@ -167,14 +167,6 @@ const Template: React.FC<TemplateProps> = ({ history }) => {
       render: renderColKind,
     },
     {
-      title: intl.get('sms.tpl.business'),
-      dataIndex: 'buKind',
-    },
-    {
-      title: intl.get('sms.tpl.system'),
-      dataIndex: 'buSystem',
-    },
-    {
       title: intl.get('sms.tpl.lastEditTime'),
       dataIndex: 'lastEditTime',
       render: renderColTime,

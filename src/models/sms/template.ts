@@ -2,8 +2,7 @@ import { message } from 'antd';
 import intl from 'react-intl-universal';
 import { getSmsTemplateList, SmsTemplatelItem, SmsTemplateType, delSmsTemplate, editSmsTemplate, createSmsTemplate } from '@/services/sms/template';
 import { Model } from 'dva';
-import { getSmsBusinessList, SmsBusinessType } from '@/services/sms/business';
-import { Pagination, BusinessData } from '@/models/common';
+import { Pagination } from '@/models/common';
 
 export interface SmsTemplateState {
   dataList: SmsTemplatelItem[];
@@ -12,7 +11,6 @@ export interface SmsTemplateState {
   confirmLoading: boolean;
   editIndex: number;
   pagination: Pagination;
-  businessData: BusinessData;
 }
 
 export interface SmsTemplateModel extends Model {
@@ -26,12 +24,6 @@ const initState: SmsTemplateState = {
   confirmLoading: false,
   editIndex: -1,
   pagination: { defaultPageSize: 10, total: 0, current: 1 },
-  businessData: {
-    isLoading: false,
-    isLoadedData: false,
-    curIndex: 0,
-    rawData: [],
-  },
 };
 
 const model: SmsTemplateModel = {
@@ -41,10 +33,9 @@ const model: SmsTemplateModel = {
     change(state, { payload }: any) {
       return { ...state, ...payload };
     },
-    reset(state) {
+    reset() {
       const syncSate = JSON.parse(JSON.stringify(initState));
-      delete syncSate.businessData;
-      return { ...state, ...syncSate };
+      return { ...syncSate };
     },
   },
   effects: {
@@ -103,35 +94,6 @@ const model: SmsTemplateModel = {
       yield put({
         type: 'change',
         payload: { ...templateState },
-      });
-    },
-    *getBusinessData(_, { put, select }) {
-      const { businessData, editIndex, dataList }: SmsTemplateState = yield select((state: { smsTemplate: SmsTemplateState }) => state.smsTemplate);
-      yield put({
-        type: 'change',
-        payload: { businessData: { ...businessData, isLoading: true } },
-      });
-      const result: SmsBusinessType = yield getSmsBusinessList();
-      if (result && result.code === 0 && result.data) {
-        const list = result.data.list || [];
-        list.forEach((item) => {
-          const { buKind, buId, buSystem } = item;
-          const index = businessData.rawData.findIndex((e) => e.buKind === buKind);
-          if (index === -1) {
-            businessData.rawData.push({ buKind, buId, children: [buSystem] });
-          } else {
-            businessData.rawData[index].children.push(buSystem);
-          }
-        });
-        if (editIndex !== -1) {
-          businessData.curIndex = businessData.rawData.findIndex((raw) => raw.buKind === dataList[editIndex].buKind);
-        }
-        businessData.isLoadedData = true;
-      }
-      businessData.isLoading = false;
-      yield put({
-        type: 'change',
-        payload: { businessData: { ...businessData } },
       });
     },
   },

@@ -27,33 +27,19 @@ const Create: React.FC<{}> = () => {
   const dataList = useSelector((state: { mailTemplate: MailTemplateState }) => state.mailTemplate.dataList);
   const editIndex = useSelector((state: { mailTemplate: MailTemplateState }) => state.mailTemplate.editIndex);
   const confirmLoading = useSelector((state: { mailTemplate: MailTemplateState }) => state.mailTemplate.confirmLoading);
-  const businessData = useSelector((state: { mailTemplate: MailTemplateState }) => state.mailTemplate.businessData);
   const [form] = Form.useForm();
   const dispatch = useDispatch<Dispatch>();
-  const { rawData, curIndex, isLoadedData, isLoading } = businessData;
 
-  // set system value when select sms business
-  const onBusinessSelectChange = (e: string) => {
-    const index = rawData.findIndex((item) => item.buKind === e);
-    dispatch({
-      type: 'mailTemplate/change',
-      payload: {},
-    });
-    const fields = form.getFieldsValue();
-    fields.buSystem = rawData[index].children[0];
-    form.setFieldsValue(fields);
-  };
   // create or edit mail template
   const createTemplate = (e: any) => {
-    const { templateName, title, content, buKind, buSystem, kind } = e;
-    const buItem = rawData.find((e) => e.buKind === buKind);
+    const { templateName, title, content, buSystem, kind } = e;
     const placeholderList = content.match(/{\d+}/gi);
     const payload: CreateMailParamsType = {
       templateName,
       title,
       content,
       kind,
-      buId: buItem && buItem.buId ? buItem.buId : 0,
+      buId: 0,
       buSystem,
       rule: 1,
       channel: 1,
@@ -65,13 +51,8 @@ const Create: React.FC<{}> = () => {
     });
   };
 
-  // get sms business-system list
+  // set template not refresh
   useEffect(() => {
-    if (!isLoadedData) {
-      dispatch({
-        type: 'mailTemplate/getBusinessData',
-      });
-    }
     return () => {
       dispatch({
         type: 'mailTemplate/change',
@@ -93,27 +74,6 @@ const Create: React.FC<{}> = () => {
             rules={[{ validator: validateEmptyContent.bind(null, intl.get('sms.tpl.no.name')) }]}
           >
             <Input type="text" placeholder={intl.get('sms.tpl.edit.name')} />
-          </Form.Item>
-          <Form.Item label={intl.get('sms.tpl.business')} required={true} className="business-view">
-            <Form.Item name="buKind" rules={[{ required: true, message: intl.get('sms.tpl.no.business') }]}>
-              <Select placeholder={intl.get('sms.tpl.select.business')} loading={isLoading} onChange={onBusinessSelectChange}>
-                {rawData.map((value, index) => (
-                  <Select.Option key={`bus-${index}`} value={value.buKind}>
-                    {value.buKind}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="buSystem" rules={[{ required: true, message: intl.get('sms.tpl.no.system') }]}>
-              <Select placeholder={intl.get('sms.tpl.select.system')} loading={isLoading}>
-                {rawData[curIndex] &&
-                  rawData[curIndex].children.map((value, index) => (
-                    <Select.Option key={`bus-${index}`} value={value}>
-                      {value}
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Form.Item>
           </Form.Item>
           <Form.Item
             label={intl.get('mail.tpl.title')}

@@ -1,106 +1,90 @@
 import React, { useState } from 'react';
 import { router, Dispatch, useSelector, useDispatch } from 'dva';
-import { Checkbox } from 'antd';
-import { GoogleOutlined, TwitterOutlined, LinkedinOutlined } from '@ant-design/icons';
-import { LoginParamsType } from '@/services/login';
+import { Button, Form, Input } from 'antd';
+import CaptchaItem from '@/components/Form/CaptchaItem';
+import MobileItem from '@/components/Form/MobileItem';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { ConnectState } from '@/models';
-import LoginFrom from './LoginForm';
-import './index.less';
+import '../index.less';
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginFrom;
 const { Link } = router;
 
 const Login: React.FC<{}> = () => {
-  const [type, setType] = useState<string>('account');
-  const { submitting, remember } = useSelector((state: ConnectState) => state.user);
+  const [isTiming, setTiming] = useState(false);
+  const { submitting, isAccount } = useSelector((state: ConnectState) => state.user);
   const dispatch = useDispatch<Dispatch>();
 
-  const handleSubmit = (values: LoginParamsType) => {
+  const handleSubmit = (values: any) => {
+    console.log(values);
     dispatch({
       type: 'user/login',
-      payload: { ...values, type },
+      payload: { ...values, isAccount },
     });
   };
 
-  const setAutoLogin = (remember: boolean) => {
+  const onGetCaptcha = (e: { [key: string]: string }) => {
+    console.log(e);
+    setTiming(true);
     dispatch({
-      type: 'user/change',
-      payload: { remember },
+      type: 'user/getCaptcha',
+      payload: { mobile: e.mobile },
     });
   };
+
+  // change login type: mobile or account
+  const changeLoginType = () => {
+    dispatch({
+      type: 'user/change',
+      payload: { isAccount: !isAccount },
+    });
+  };
+
   return (
     <div className="login-main">
-      <div className="logo"></div>
-      <div className="login-desc">Kiple 是xxxx的xxx公司/服务</div>
-      <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
-        <Tab key="account" tab="账户密码登录">
-          <UserName
-            name="userName"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!',
-              },
-            ]}
-          />
-          <Password
-            name="password"
-            placeholder="请输入密码"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码！',
-              },
-            ]}
-          />
-        </Tab>
-        <Tab key="mobile" tab="手机号登录">
-          <Mobile
-            name="mobile"
-            placeholder="手机号"
-            rules={[
-              {
-                required: true,
-                message: '请输入手机号！',
-              },
-              {
-                pattern: /^1\d{10}$/,
-                message: '手机号格式错误！',
-              },
-            ]}
-          />
-          <Captcha
-            name="captcha"
-            placeholder="验证码"
-            countDown={120}
-            getCaptchaButtonText=""
-            getCaptchaSecondText="秒"
-            rules={[
-              {
-                required: true,
-                message: '请输入验证码！',
-              },
-            ]}
-          />
-        </Tab>
+      <div className="logo">
+        <span className="login-head-span"></span>
+        <span className="title">用户登陆</span>
+      </div>
+      <Form onFinish={handleSubmit} className="login-form">
+        {isAccount ? (
+          <>
+            <Form.Item name="userName" rules={[{ required: true, message: '请输入用户名!' }]}>
+              <Input type="text" size="large" placeholder="用户名/手机号/邮箱" prefix={<UserOutlined />} />
+            </Form.Item>
+            <Form.Item name="password" rules={[{ required: true, message: '请输入密码!' }]}>
+              <Input.Password type="password" size="large" placeholder="用户名/手机号/邮箱" prefix={<LockOutlined />} />
+            </Form.Item>
+          </>
+        ) : (
+          <>
+            <MobileItem areaName="area" mobileName="mobile" />
+            <CaptchaItem
+              isTiming={isTiming}
+              name="captcha"
+              size="large"
+              countDown={3}
+              validateField="mobile"
+              onTimeout={() => {
+                setTimeout(() => {
+                  setTiming(false);
+                }, 0);
+              }}
+              onGetCaptcha={onGetCaptcha}
+            />
+          </>
+        )}
+
+        <Button htmlType="submit" loading={submitting} className="submit" size="large" type="primary">
+          登录
+        </Button>
         <div className="form-row">
-          <Checkbox checked={remember} onChange={(e) => setAutoLogin(e.target.checked)}>
-            自动登录
-          </Checkbox>
-          <a>忘记密码</a>
-        </div>
-        <Submit loading={submitting}>登录</Submit>
-        <div className="form-row">
-          <div>
-            其他登录方式
-            <GoogleOutlined className="icon" />
-            <TwitterOutlined className="icon" />
-            <LinkedinOutlined className="icon" />
-          </div>
+          <a onClick={changeLoginType}>{isAccount ? '免密登录' : '密码登录'}</a>
+          <span className="login-foot-span"></span>
+          <Link to="/password_reset">忘记密码</Link>
+          <span className="login-foot-span"></span>
           <Link to="/user/register">注册账户</Link>
         </div>
-      </LoginFrom>
+      </Form>
     </div>
   );
 };
