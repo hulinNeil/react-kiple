@@ -13,7 +13,7 @@ interface Type {
 
 const countDown = 120;
 
-// rest tel or email
+// reset mobile or email
 const ResetContact = ({ cRef }: { cRef: any }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -86,13 +86,13 @@ const ResetContact = ({ cRef }: { cRef: any }) => {
     } else {
       const reg = type.type === 'email' ? /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/i : /^\d{4,14}$/i;
       if (!reg.test(value)) {
-        msg = (type.type === 'tel' ? '手机号' : '邮箱') + '格式不正确';
+        msg = type.type === 'tel' ? intl.get('sms.send.error.to') : intl.get('mail.send.error.to');
       }
     }
     return msg ? Promise.reject(msg) : Promise.reject();
   };
 
-  const title = `${type.operate === 'add' ? '添加' : '重置'}${type.type === 'tel' ? '手机号' : '邮箱'}`;
+  const title = `${type.operate === 'add' ? intl.get('add') : intl.get('reset')}${type.type === 'tel' ? intl.get('tel') : intl.get('email')}`;
 
   return (
     <ModalForm
@@ -104,17 +104,17 @@ const ResetContact = ({ cRef }: { cRef: any }) => {
       onOk={onOk}
     >
       {type.type === 'tel' ? (
-        <MobileItem areaName="area" mobileName="contact" label="手机号" />
+        <MobileItem areaName="area" mobileName="contact" label={intl.get('tel')} />
       ) : (
-        <Form.Item label="邮箱" name="contact" required={true} rules={[{ validator: validateContact }]}>
-          <Input type="text" placeholder="请输入邮箱" />
+        <Form.Item label={intl.get('email')} name="contact" required={true} rules={[{ validator: validateContact }]}>
+          <Input type="text" placeholder={intl.get('email.edit')} />
         </Form.Item>
       )}
 
       <CaptchaItem
         isTiming={timing}
         name="captcha"
-        label="验证码"
+        label={intl.get('cap')}
         countDown={3}
         validateField="contact"
         onTimeout={() => {

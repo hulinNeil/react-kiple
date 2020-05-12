@@ -5,14 +5,16 @@ import areaCode from '@/config/areaCode';
 import { validateTelContent, validateEmptyContent } from '@/utils/validateForm';
 import './index.less';
 
+// mobile and area form-item
 interface MobileType {
   areaName: string;
   mobileName: string;
+  disabled?: boolean;
   label?: string;
   size?: 'large' | 'middle' | 'small';
 }
 
-const MobileItem: React.FC<MobileType> = ({ areaName, mobileName, size, label }) => {
+const MobileItem: React.FC<MobileType> = ({ areaName, mobileName, size, label, disabled }) => {
   const currentLocale: string | undefined = intl.getInitOptions().currentLocale;
 
   return (
@@ -22,10 +24,11 @@ const MobileItem: React.FC<MobileType> = ({ areaName, mobileName, size, label })
           className="mobile-area"
           name={areaName}
           normalize={(e) => areaCode[e].code}
-          rules={[{ required: true, message: '请选择手机区号！' }]}
+          rules={[{ required: true, message: intl.get('area.edit') }]}
         >
           <Select
             size={size}
+            disabled={disabled}
             value="12"
             dropdownClassName="area-dropdown"
             optionLabelProp="lable"
@@ -43,9 +46,9 @@ const MobileItem: React.FC<MobileType> = ({ areaName, mobileName, size, label })
         <Form.Item
           name={mobileName}
           className="mobile-input"
-          rules={[{ validator: validateEmptyContent.bind(null, '手机号不能为空') }, { validator: validateTelContent }]}
+          rules={[{ validator: validateEmptyContent.bind(null, intl.get('push.len.empty')) }, { validator: validateTelContent }]}
         >
-          <Input type="text" size={size} placeholder="手机号" />
+          <Input disabled={disabled} type="text" size={size} placeholder={intl.get('tel')} />
         </Form.Item>
       </Input.Group>
     </Form.Item>

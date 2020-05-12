@@ -21,7 +21,7 @@ export const validateMailContent = (rule: any, value: string) => {
       msg = intl.get('sms.tpl.error.content', { replace: repetitiveKeys.join('-') });
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 export const validateMailAddressee = (rule: any, value: string) => {
@@ -37,7 +37,7 @@ export const validateMailAddressee = (rule: any, value: string) => {
       msg = intl.get('mail.send.error.to');
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 export const validateSmsTel = (rule: any, value: string) => {
   let msg = '';
@@ -52,7 +52,7 @@ export const validateSmsTel = (rule: any, value: string) => {
       msg = intl.get('sms.send.error.to');
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 export const validateTelContent = (rule: any, value: string) => {
@@ -60,7 +60,7 @@ export const validateTelContent = (rule: any, value: string) => {
   if (value && !/^\d{4,14}$/.test(value)) {
     msg = intl.get('sms.send.error.to');
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 export const validateSMSContent = (rule: any, value: string) => {
@@ -82,7 +82,7 @@ export const validateSMSContent = (rule: any, value: string) => {
       msg = intl.get('sms.tpl.error.content', { replace: repetitiveKeys.join('-') });
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 export const validateVersionContent = (rule: any, value: string) => {
@@ -93,7 +93,19 @@ export const validateVersionContent = (rule: any, value: string) => {
       msg = intl.get('push.error.version');
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
+};
+
+export const validatePassword = (rule: any, value: string) => {
+  let msg = '';
+  if (!value || !value.trim()) {
+    msg = intl.get('push.len.empty');
+  } else {
+    if (!/^(?=.+[a-zA-Z])(?=.+\d).{6,20}$/.test(value)) {
+      msg = intl.get('pwd.error');
+    }
+  }
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 export const validateAppName = (rule: any, value: string) => {
@@ -101,7 +113,7 @@ export const validateAppName = (rule: any, value: string) => {
   if (value && value.trim().length > 20) {
     msg = intl.get('push.len.max', { length: 20 });
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 // use: validatePushContentLength.bind(null,20)
@@ -115,7 +127,7 @@ export const validatePushContentLength = (...args: any[]) => {
       msg = intl.get('push.len.max', { length: args[0] });
     }
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };
 
 // use: validateEmptyContent.bind(null,'xxxxx')
@@ -125,5 +137,5 @@ export const validateEmptyContent = (...args: any[]) => {
   if (!value) {
     msg = args[0];
   }
-  return msg ? Promise.reject(msg) : Promise.reject();
+  return msg ? Promise.reject(msg) : Promise.resolve();
 };

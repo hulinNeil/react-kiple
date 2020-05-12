@@ -7,7 +7,7 @@ import { languageList } from '@/config/index';
 import './index.less';
 
 const languageLabels = {
-  'ms-MS': 'Malay',
+  'ms-MS': 'Malaysia',
   'zh-CN': '简体中文',
   'zh-TW': '繁体中文',
   'en-US': 'English',

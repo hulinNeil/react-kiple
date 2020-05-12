@@ -1,6 +1,9 @@
 import React, { useState, useImperativeHandle } from 'react';
+import intl from 'react-intl-universal';
 import { Form, Input } from 'antd';
 import ModalForm from '@/components/Form/ModalForm';
+import ConfirmPwdItem from '@/components/Form/ConfirmPwdItem';
+import { validatePassword } from '@/utils/validateForm';
 
 const ResetPassword = ({ cRef }: { cRef: any }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -29,21 +32,16 @@ const ResetPassword = ({ cRef }: { cRef: any }) => {
 
   return (
     <ModalForm
-      title={`重置${passwordType === 1 ? '登录' : '支付'}密码`}
+      title={`${intl.get('reset')}${passwordType === 1 ? intl.get('login') : intl.get('pay')}${intl.get('pwd')}`}
       visible={dialogVisible}
       confirmLoading={confirmLoading}
       onCancel={hideRestPassword}
       onOk={onOk}
     >
-      <Form.Item label="原始密码" name="old" required={true}>
-        <Input type="password" placeholder="请输入原始密码" />
+      <Form.Item label={intl.get('old') + intl.get('pwd')} name="old" required={true} rules={[{ validator: validatePassword }]}>
+        <Input type="password" placeholder={intl.get('pwd.edit', { type: intl.get('old') })} />
       </Form.Item>
-      <Form.Item label="新密码" name="new" required={true}>
-        <Input type="password" placeholder="请输入新密码" />
-      </Form.Item>
-      <Form.Item label="确认密码" name="again" required={true}>
-        <Input type="password" placeholder="再次输入新密码" />
-      </Form.Item>
+      <ConfirmPwdItem lable={intl.get('new') + intl.get('pwd')} />
     </ModalForm>
   );
 };

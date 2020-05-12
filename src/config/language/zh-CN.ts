@@ -1,5 +1,6 @@
 import smsMail from './zh-CN/smsMail';
 import push from './zh-CN/push';
+import account from './zh-CN/account';
 
 export default {
   header: '总览',
@@ -12,6 +13,8 @@ export default {
   cancel: '取消',
   all: '全部',
   add: '添加',
+  reset: '重置',
   ...smsMail,
   ...push,
+  ...account
 };

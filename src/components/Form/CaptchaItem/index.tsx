@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// import intl from 'react-intl-universal';
+import intl from 'react-intl-universal';
 import { Form, Input, Row, Col, Button } from 'antd';
 import { validateEmptyContent } from '@/utils/validateForm';
 
+// email or mobile captcha form-item
 interface CaptchaType {
   countDown?: number;
   isTiming: boolean;
+  disabled?: boolean;
   size?: 'large' | 'middle' | 'small';
   label?: string;
   name: string;
@@ -14,7 +16,7 @@ interface CaptchaType {
   onTimeout: () => any;
 }
 
-const CaptchaItem: React.FC<CaptchaType> = ({ countDown, validateField, onGetCaptcha, onTimeout, isTiming, size, label, name }) => {
+const CaptchaItem: React.FC<CaptchaType> = ({ countDown, validateField, onGetCaptcha, onTimeout, isTiming, size, label, name, disabled }) => {
   const [count, setCount] = useState<number>(countDown || 120);
   const [timing, setTiming] = useState(isTiming);
   useEffect(() => {
@@ -46,14 +48,14 @@ const CaptchaItem: React.FC<CaptchaType> = ({ countDown, validateField, onGetCap
       {({ validateFields }) => (
         <Row gutter={8}>
           <Col span={15}>
-            <Form.Item name={name} rules={[{ validator: validateEmptyContent.bind(null, '验证码不能为空') }]}>
-              <Input type="text" size={size} placeholder="请输入验证码" />
+            <Form.Item name={name} rules={[{ validator: validateEmptyContent.bind(null, intl.get('push.len.empty')) }]}>
+              <Input type="text" size={size} placeholder={intl.get('cap.edit')} disabled={disabled} />
             </Form.Item>
           </Col>
           <Col span={9}>
             <Button
               size={size}
-              disabled={timing}
+              disabled={disabled || timing}
               style={{ display: 'block', width: '100%' }}
               onClick={() => {
                 if (validateField) {
@@ -63,7 +65,7 @@ const CaptchaItem: React.FC<CaptchaType> = ({ countDown, validateField, onGetCap
                 }
               }}
             >
-              {timing ? `${count} 秒` : '获取验证码'}
+              {timing ? `${count} s` : intl.get('cap.get')}
             </Button>
           </Col>
         </Row>

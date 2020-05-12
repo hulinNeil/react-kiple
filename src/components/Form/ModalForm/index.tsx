@@ -42,8 +42,8 @@ const ModalForm: React.FC<ModalFormProps> = ({ form, title, visible, confirmLoad
   useResetFormOnCloseModal({ form, visible, initialValues });
 
   const formItemLayout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 5 },
+    wrapperCol: { span: 19 },
     form,
     initialValues: initialValues || {},
   };

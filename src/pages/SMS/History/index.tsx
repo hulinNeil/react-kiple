@@ -47,7 +47,7 @@ const History: React.FC<{}> = () => {
 
   const columns: ColumnProps<SmsHistoryItem>[] = [
     {
-      title: intl.get('sms.history.to'),
+      title: intl.get('tel'),
       dataIndex: 'receivedUserSms',
       width: 110,
     },
@@ -78,7 +78,7 @@ const History: React.FC<{}> = () => {
       <DateSearch onChange={onDateChange} />
       <Card bordered={true}>
         <Form className="sms-sent-search-form" name="search" onFinish={searchHistaory} initialValues={params.current}>
-          <Form.Item label={intl.get('sms.history.to')} name="to" className="form-tel-number" rules={[{ validator: validateTelContent }]}>
+          <Form.Item label={intl.get('tel')} name="to" className="form-tel-number" rules={[{ validator: validateTelContent }]}>
             <Input type="text" maxLength={14} />
           </Form.Item>
           <Form.Item label={intl.get('sms.history.status')} name="status">

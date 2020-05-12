@@ -72,8 +72,6 @@ export default {
   'sms.history.title': '已发送短信',
   'mail.history.title': '已发送邮件',
   'sms.history.content': '发送内容',
-  'sms.history.to': '手机号',
-  'mail.history.to': '邮箱',
   'sms.history.status': '发送状态',
   'sms.history.remark': '备注',
   'sms.history.toady': '今天',
