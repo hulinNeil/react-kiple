@@ -26,7 +26,8 @@ const model: AdminModel = {
             menuList = menuList.concat(item.children);
           }
         });
-      const currentMenuIndex = menuList.findIndex((item) => ~payload.path.indexOf(item.key));
+      const currentMenuIndex = menuList.findIndex((item) => payload.path.indexOf(item.key) === 0);
+      console.log('change', currentMenuIndex, payload);
       return { ...state, currentMenuIndex };
     },
   },

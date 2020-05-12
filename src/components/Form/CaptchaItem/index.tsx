@@ -47,12 +47,12 @@ const CaptchaItem: React.FC<CaptchaType> = ({ countDown, validateField, onGetCap
     <Form.Item label={label} required={label ? true : false} shouldUpdate style={{ marginBottom: 0 }}>
       {({ validateFields }) => (
         <Row gutter={8}>
-          <Col span={15}>
+          <Col span={14}>
             <Form.Item name={name} rules={[{ validator: validateEmptyContent.bind(null, intl.get('push.len.empty')) }]}>
               <Input type="text" size={size} placeholder={intl.get('cap.edit')} disabled={disabled} />
             </Form.Item>
           </Col>
-          <Col span={9}>
+          <Col span={10}>
             <Button
               size={size}
               disabled={disabled || timing}

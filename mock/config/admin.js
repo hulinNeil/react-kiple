@@ -38,18 +38,18 @@ const menuList = [
         ],
       },
       {
-        title: '订单管理',
-        key: '/charts',
+        title: '运营中心',
+        key: '/operation',
         icon: 'https://cloudcache.tencent-cloud.com/open_proj/proj_qcloud_v2/mc_2014/server/css/img/aside-icon/cvm-logo.svg',
         children: [
           {
-            title: '概述',
-            key: '/charts/bar',
+            title: '商户管理',
+            key: '/operation/merchant',
             icon: 'MailOutlined',
           },
           {
-            title: '订单需求',
-            key: '/charts/radar',
+            title: '帐号管理',
+            key: '/operation/account',
             icon: 'MailOutlined',
           },
         ],

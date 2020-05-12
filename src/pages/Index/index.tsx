@@ -18,7 +18,7 @@ interface IndexProps extends RouteComponentProps {
 
 // 路由懒加载(Road load by lazy)
 const Merchant = React.lazy(() => import(/* webpackChunkName:"Merchant" */ '../Merchant'));
-const Charts = React.lazy(() => import(/* webpackChunkName:"Charts" */ '../Charts'));
+const Operation = React.lazy(() => import(/* webpackChunkName:"Operation" */ '../Operation'));
 const SMS = React.lazy(() => import(/* webpackChunkName:"SMS" */ '../SMS'));
 const Mail = React.lazy(() => import(/* webpackChunkName:"Mail" */ '../Mail'));
 const Push = React.lazy(() => import(/* webpackChunkName:"Push" */ '../Push'));
@@ -73,7 +73,7 @@ const Index: React.FC<IndexProps> = ({ history }) => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/merchant" component={Merchant} />
-            <Route path="/charts" component={Charts} />
+            <Route path="/operation" component={Operation} />
             <Route path="/sms" component={SMS} />
             <Route path="/mail" component={Mail} />
             <Route path="/push" component={Push} />

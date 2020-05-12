@@ -17,6 +17,6 @@ export { apiConfig };
 
 export const languageList = ['ms-MS', 'zh-CN', 'zh-TW', 'en-US'];
 
-export const shortcutMaxLength = 3;
+export const shortcutMaxLength = 5;
 
 export const defaultPlaceholderImage = 'https://www.gstatic.com/mobilesdk/180130_mobilesdk/images/image_placeholder.png';
