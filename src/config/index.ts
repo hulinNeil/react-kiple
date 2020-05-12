@@ -1,6 +1,6 @@
 const apiConfig = {
-  // host: 'http://localhost:3100', // http://localhost:3100
-  host: '', // http://localhost:3100
+  host: 'http://localhost:3100', // http://localhost:3100
+  // host: '', // http://localhost:3100
   proxy: '/web',
 };
 

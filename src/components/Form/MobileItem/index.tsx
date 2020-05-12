@@ -1,43 +1,54 @@
-import React, { useState } from 'react';
-// import intl from 'react-intl-universal';
+import React from 'react';
+import intl from 'react-intl-universal';
 import { Form, Input, Select } from 'antd';
 import areaCode from '@/config/areaCode';
+import { validateTelContent, validateEmptyContent } from '@/utils/validateForm';
 import './index.less';
 
 interface MobileType {
   areaName: string;
   mobileName: string;
+  label?: string;
+  size?: 'large' | 'middle' | 'small';
 }
 
-const MobileItem: React.FC<MobileType> = ({ areaName, mobileName }) => {
-  const [area, setArea] = useState(areaCode[0].code);
+const MobileItem: React.FC<MobileType> = ({ areaName, mobileName, size, label }) => {
+  const currentLocale: string | undefined = intl.getInitOptions().currentLocale;
 
   return (
-    <Input.Group compact className="mobile-view">
-      <Form.Item className="mobile-area" name={areaName} getValueFromEvent={() => area}>
-        <Select
-          onSelect={(e) => {
-            console.log(e);
-            setArea(areaCode[e].code);
-          }}
-          size="large"
-          virtual={false}
-          value={area}
-          defaultActiveFirstOption={true}
-          dropdownMatchSelectWidth={318}
-          style={{ width: 88 }}
+    <Form.Item label={label} required={label ? true : false} className="mobile-view">
+      <Input.Group compact>
+        <Form.Item
+          className="mobile-area"
+          name={areaName}
+          normalize={(e) => areaCode[e].code}
+          rules={[{ required: true, message: '请选择手机区号！' }]}
         >
-          {areaCode.map((item, index) => (
-            <Select.Option value={index} key={index}>
-              <span>{item.zh}</span> {item.code}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item name={mobileName} className="mobile-input" rules={[{ required: true, message: '请输入用户名!' }]}>
-        <Input type="text" size="large" placeholder="手机号" />
-      </Form.Item>
-    </Input.Group>
+          <Select
+            size={size}
+            value="12"
+            dropdownClassName="area-dropdown"
+            optionLabelProp="lable"
+            defaultActiveFirstOption={false}
+            dropdownMatchSelectWidth={318}
+            style={{ width: 88 }}
+          >
+            {areaCode.map((item, index) => (
+              <Select.Option value={index} lable={item.code} key={index}>
+                {currentLocale && ~currentLocale.indexOf('zh') ? item.zh : item.us} {item.code}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name={mobileName}
+          className="mobile-input"
+          rules={[{ validator: validateEmptyContent.bind(null, '手机号不能为空') }, { validator: validateTelContent }]}
+        >
+          <Input type="text" size={size} placeholder="手机号" />
+        </Form.Item>
+      </Input.Group>
+    </Form.Item>
   );
 };
 

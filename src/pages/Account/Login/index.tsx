@@ -24,7 +24,7 @@ const Login: React.FC<{}> = () => {
 
   const onGetCaptcha = (e: { [key: string]: string }) => {
     console.log(e);
-    setTiming(true);
+    // setTiming(true);
     dispatch({
       type: 'user/getCaptcha',
       payload: { mobile: e.mobile },
@@ -45,7 +45,7 @@ const Login: React.FC<{}> = () => {
         <span className="login-head-span"></span>
         <span className="title">用户登陆</span>
       </div>
-      <Form onFinish={handleSubmit} className="login-form">
+      <Form onFinish={handleSubmit} initialValues={{ area: '+60' }} className="login-form">
         {isAccount ? (
           <>
             <Form.Item name="userName" rules={[{ required: true, message: '请输入用户名!' }]}>
@@ -57,7 +57,7 @@ const Login: React.FC<{}> = () => {
           </>
         ) : (
           <>
-            <MobileItem areaName="area" mobileName="mobile" />
+            <MobileItem size="large" areaName="area" mobileName="mobile" />
             <CaptchaItem
               isTiming={isTiming}
               name="captcha"
@@ -82,7 +82,7 @@ const Login: React.FC<{}> = () => {
           <span className="login-foot-span"></span>
           <Link to="/password_reset">忘记密码</Link>
           <span className="login-foot-span"></span>
-          <Link to="/user/register">注册账户</Link>
+          <Link to="/register">注册账户</Link>
         </div>
       </Form>
     </div>

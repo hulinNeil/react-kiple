@@ -1,8 +1,9 @@
 import React from 'react';
 import { router, Dispatch, useSelector, useDispatch } from 'dva';
 import { Button, Form, Input } from 'antd';
-import { UserOutlined, MailOutlined } from '@ant-design/icons';
+import { MailOutlined } from '@ant-design/icons';
 import { ConnectState } from '@/models';
+import MobileItem from '@/components/Form/MobileItem';
 import '../index.less';
 
 const { Link } = router;
@@ -33,15 +34,13 @@ const RetrievePwd: React.FC<{}> = () => {
         <span className="login-head-span"></span>
         <span className="title">找回密码</span>
       </div>
-      <Form onFinish={handleSubmit} className="login-form">
+      <Form onFinish={handleSubmit} className="login-form" initialValues={{ area: '+60' }}>
         {isAccount ? (
           <Form.Item name="userName" rules={[{ required: true, message: '请输入用户名!' }]}>
             <Input type="text" size="large" placeholder="帐号绑定的邮箱" prefix={<MailOutlined />} />
           </Form.Item>
         ) : (
-          <Form.Item name="userName" rules={[{ required: true, message: '请输入用户名!' }]}>
-            <Input type="text" size="large" placeholder="帐号绑定的手机号" prefix={<UserOutlined />} />
-          </Form.Item>
+          <MobileItem size="large" areaName="area" mobileName="mobile" />
         )}
 
         <Button htmlType="submit" loading={submitting} className="submit" size="large" type="primary">

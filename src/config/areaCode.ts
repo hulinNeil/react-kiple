@@ -1,5 +1,17 @@
 export default [
   {
+    char: '常',
+    us: 'Malaysia',
+    zh: '马来西亚',
+    code: '+60',
+  },
+  {
+    char: '常',
+    us: 'China',
+    zh: '中国',
+    code: '+86',
+  },
+  {
     char: 'A',
     us: 'Albania',
     zh: '阿尔巴尼亚',

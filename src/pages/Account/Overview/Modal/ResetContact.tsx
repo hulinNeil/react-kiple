@@ -1,8 +1,9 @@
-import React, { useState, useImperativeHandle, useCallback, useEffect } from 'react';
+import React, { useState, useImperativeHandle, useEffect } from 'react';
 import intl from 'react-intl-universal';
-import { Form, Input, Row, Col, Button, message } from 'antd';
+import { Form, Input, message } from 'antd';
 import ModalForm from '@/components/Form/ModalForm';
-import { validateEmptyContent } from '@/utils/validateForm';
+import CaptchaItem from '@/components/Form/CaptchaItem';
+import MobileItem from '@/components/Form/MobileItem';
 import './index.less';
 
 interface Type {
@@ -23,16 +24,11 @@ const ResetContact = ({ cRef }: { cRef: any }) => {
     operate: 'reset',
   });
 
-  const onGetCaptcha = useCallback(async (contact: string) => {
-    console.log('联系方式', contact);
-    // const result = await getFakeCaptcha(contact);
-    // if (!result) {
-    //   return;
-    // }
+  const onGetCaptcha = (e: any) => {
+    console.log('联系方式', e.contact);
     message.success('获取验证码成功！验证码为：1234');
     setTiming(true);
-  }, []);
-
+  };
   // Change the valid time of the captcha(改变验证码的有效时间)
   useEffect(() => {
     let interval: any;
@@ -99,34 +95,35 @@ const ResetContact = ({ cRef }: { cRef: any }) => {
   const title = `${type.operate === 'add' ? '添加' : '重置'}${type.type === 'tel' ? '手机号' : '邮箱'}`;
 
   return (
-    <ModalForm title={title} visible={dialogVisible} confirmLoading={confirmLoading} onCancel={hideRestContact} onOk={onOk}>
-      <Form.Item label={type.type === 'tel' ? '手机号' : '邮箱'} name="contact" required={true} rules={[{ validator: validateContact }]}>
-        <Input type="text" placeholder={`请输入${type.type === 'tel' ? '手机号' : '邮箱'}`} />
-      </Form.Item>
-      <Form.Item label="验证码" required={true} shouldUpdate className="captcha-view">
-        {({ validateFields }) => (
-          <Row gutter={8}>
-            <Col span={16}>
-              <Form.Item name="captcha" rules={[{ validator: validateEmptyContent.bind(null, '验证码不能为空') }]}>
-                <Input type="text" placeholder="请输入验证码" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Button
-                disabled={timing}
-                className="captcha-button"
-                onClick={() => {
-                  validateFields(['contact']).then((e) => {
-                    onGetCaptcha(e.contact);
-                  });
-                }}
-              >
-                {timing ? `${count} 秒` : '获取验证码'}
-              </Button>
-            </Col>
-          </Row>
-        )}
-      </Form.Item>
+    <ModalForm
+      title={title}
+      initialValues={{ area: '+60' }}
+      visible={dialogVisible}
+      confirmLoading={confirmLoading}
+      onCancel={hideRestContact}
+      onOk={onOk}
+    >
+      {type.type === 'tel' ? (
+        <MobileItem areaName="area" mobileName="contact" label="手机号" />
+      ) : (
+        <Form.Item label="邮箱" name="contact" required={true} rules={[{ validator: validateContact }]}>
+          <Input type="text" placeholder="请输入邮箱" />
+        </Form.Item>
+      )}
+
+      <CaptchaItem
+        isTiming={timing}
+        name="captcha"
+        label="验证码"
+        countDown={3}
+        validateField="contact"
+        onTimeout={() => {
+          setTimeout(() => {
+            setTiming(false);
+          }, 0);
+        }}
+        onGetCaptcha={onGetCaptcha}
+      />
     </ModalForm>
   );
 };

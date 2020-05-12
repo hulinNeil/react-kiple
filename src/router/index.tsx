@@ -9,10 +9,18 @@ const { Router, Route, Switch, Redirect } = router;
  */
 
 function RouterConfig({ history, app }: any) {
-  // 动态加载
+  // 动态加载(Road load by lazy)
   const Login = dynamic({
     app,
     component: () => import(/* webpackChunkName:"Login" */ '@/pages/Account/Login'),
+  });
+  const RetrievePwd = dynamic({
+    app,
+    component: () => import(/* webpackChunkName:"Login" */ '@/pages/Account/RetrievePwd'),
+  });
+  const Register = dynamic({
+    app,
+    component: () => import(/* webpackChunkName:"Login" */ '@/pages/Account/Register'),
   });
 
   const Index = dynamic({
@@ -20,15 +28,13 @@ function RouterConfig({ history, app }: any) {
     component: () => import(/* webpackChunkName:"Index" */ '@/pages/Index'),
   });
 
-  const RetrievePwd = dynamic({
-    app,
-    component: () => import(/* webpackChunkName:"RetrievePwd" */ '@/pages/Account/RetrievePwd'),
-  });
+  
 
   return (
     <Router history={history}>
       <Switch>
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
         <Route path="/password_reset" component={RetrievePwd} />
         <Route path="/" component={Index} />
         <Redirect to="/" />
