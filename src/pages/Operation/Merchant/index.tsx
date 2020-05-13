@@ -10,12 +10,16 @@ const Merchant = () => {
   // table header
   const columns = [
     {
+      title: '商户ID',
+      dataIndex: 'buKind',
+    },
+    {
       title: '商户名称',
       dataIndex: 'name',
     },
     {
-      title: '帐号ID',
-      dataIndex: 'buKind',
+      title: '主商户',
+      dataIndex: 'parent',
     },
     {
       title: '操作',
